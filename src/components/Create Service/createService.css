@@ -1,0 +1,71 @@
+
+  .card {
+    border-radius: 12px;
+    background: #fff6f1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  .preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  
+  .preview-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 5px;
+    border-radius: 8px;
+  }
+  
+  .btn {
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  .card .form-control{
+    width: 100% !important;
+    border: 2px solid #31313154;
+  }
+  
+  .create-service-btn{
+    background-color: #CB0033;
+    color: #ffffff;
+    height: 3.0rem;
+    border-radius: 12px;
+    margin: 2rem 0 0 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .create-service-btn.disabled {
+    background-color: #CB0033 !important;
+    opacity: 0.5; /* Example: make it look disabled */
+    color: #ffffff;
+    cursor: not-allowed;
+  }
+
+  .create-service-btn:active,
+  .create-service-btn:focus{
+    background-color: #CB0033;
+    color: #ffffff;
+    outline: none;
+    box-shadow: none;
+}.create-service-btn:hover {
+      background-color: #9e0028;
+      color: #ffffff;
+      outline: none;
+      box-shadow: none;
+  }
+
+
+
+.form-label{
+  font-weight: 600;
+}
