@@ -47,21 +47,10 @@ export default function Homepage() {
     console.log("Uploaded file:", file);
   }
   return (
-    <div>
-      <h1>This is homepage</h1>
-      { currentUser ? <h1>Current User = {currentUser?.username || "Guest"}!</h1> : <h1>No user found</h1> }
-      <h1>{ userRole || "dead" }</h1>
-       <form>
-        <div>
-          <label htmlFor="fileUpload">Upload a file:</label>
-          <input 
-            type="file" 
-            id="fileUpload" 
-            name="fileUpload" 
-            onChange={handleFileUpload} 
-          />
-        </div>
-      </form>
+    <div class="container" style={{ display:"flex", justifyContent:"center", alignItems:"center", height:"80vh", flexDirection:"column"}}>
+        <h1 class="display-4">Page Under Development</h1>
+        <p class="lead">We're working hard to bring you something awesome. Stay tuned!</p>
+        <p class="mt-3">Estimated launch: Coming Soon</p>
     </div>
   )
 }

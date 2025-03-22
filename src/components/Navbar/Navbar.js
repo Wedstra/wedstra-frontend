@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./navbar.css";
-
+import logo from "../../images/wedstra_logo.png";
 const Navbar = ({ token, userRole, setToken, setUserRole }) => {
   const location = useLocation(); // ✅ Get current route
   const navigate = useNavigate();
@@ -24,7 +24,9 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
   return (
     <nav className="navbar navbar-expand-lg" id="navbar">
       <div className="container">
-        <Link className="navbar-brand" to="/">MyApp</Link>
+        <a class="navbar-brand m-0 p-0" href="#">
+          <img src={logo} alt="Bootstrap" width="60" />
+        </a>
 
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span className="navbar-toggler-icon"></span>
@@ -50,11 +52,15 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
               </>
             )}
 
-            {token && userRole === "VENDOR" && (
+            <li className="nav-item">
+              <Link className={isActive("/vendor-dashboard")} to="/vendor-dashboard">Vendor Dashboard</Link>
+            </li>
+
+            {/* {token && userRole === "VENDOR" && (
               <li className="nav-item">
                 <Link className={isActive("/vendor-dashboard")} to="/vendor-dashboard">Vendor Dashboard</Link>
               </li>
-            )}
+            )} */}
           </ul>
 
           {token ? (
@@ -63,9 +69,9 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
             </button>
           ) : (
             <>
-            <span className="nav-item">
-                  <Link className={isActive("/vendor-register")} to="/vendor-register">Are you a Vendor?</Link>
-                </span>
+              <span className="nav-item">
+                <Link className={isActive("/vendor-register")} to="/vendor-register">Are you a Vendor?</Link>
+              </span>
             </>
           )}
         </div>

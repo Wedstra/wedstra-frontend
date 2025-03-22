@@ -47,6 +47,7 @@ function App() {
           <Route path='/' element={<Homepage />} />
           <Route path='/register-success' element={<RegisterSuccessful />} />
           <Route path='*' element={<Navigate to="/" />} />
+          <Route path='/vendor-dashboard' element={<VendorDashboard />} />
 
           {/* Unauthorized Routes */}
           {!token &&
@@ -69,7 +70,6 @@ function App() {
                   <Route path='/vendor-login' element={<Navigate to="/" />} />
                   <Route path='/vendor-register' element={<Navigate to="/" />} />
                   <Route path='/login-success' element={<LoginSuccessful />} />
-                  <Route path='/vendor-dashboard' element={<VendorDashboard />} />
                   <Route path='/service-details' element={<ServiceDetails />} />
                   <Route path='/service-create-success' element={<ServiceSuccess />} />
                 </>
