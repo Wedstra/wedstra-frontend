@@ -1,24 +1,49 @@
-import React, { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, MenuItem, Avatar, IconButton, Divider, Typography } from "@mui/material";
+import { jwtDecode } from "jwt-decode";
+import { MdArrowDropDown } from "react-icons/md";
 import "./navbar.css";
 import logo from "../../images/wedstra_logo.png";
 const Navbar = ({ token, userRole, setToken, setUserRole }) => {
-  const location = useLocation(); // ✅ Get current route
+  const [user, setUser] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
-    console.log("From navbar", token);
+    const fetchUsername = () => {
+      if (!token) return null;
+
+      try {
+        const decodedToken = jwtDecode(token);
+        const username = decodedToken.sub;
+        setUser(username);
+        // console.log("From navbar", token + "    userRole " + userRole + "| username " + username);
+      }
+      catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchUsername();
   }, [token, userRole]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("currentUser");
+    localStorage.removeItem("role")
     setUserRole(null);
     setToken(null);
-    navigate("/vendor-login");
+    navigate("/");
   };
 
-  // ✅ Function to add "active" class dynamically
   const isActive = (path) => (location.pathname === path ? "nav-link active" : "nav-link");
 
   return (
@@ -40,6 +65,15 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
             <li className="nav-item">
               <Link className={isActive("/services")} to="/services">Services</Link>
             </li>
+            <li className="nav-item">
+              <Link className={isActive("/vendors")} to="/vendors">Vendors</Link>
+            </li>
+            <li className="nav-item">
+              <Link className={isActive("/vendors")} to="/vendors">Contact</Link>
+            </li>
+            <li className="nav-item">
+              <Link className={isActive("/vendors")} to="/vendors">About us</Link>
+            </li>
 
             {!token && (
               <>
@@ -49,30 +83,55 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                 <li className="nav-item">
                   <Link className={isActive("/vendor-register")} to="/vendor-register">Vendor Registration</Link>
                 </li>
+                <li className="nav-item">
+                  <Link className={isActive("/user-login")} to="/user-login">User Login</Link>
+                </li>
               </>
             )}
 
-            <li className="nav-item">
-              <Link className={isActive("/vendor-dashboard")} to="/vendor-dashboard">Vendor Dashboard</Link>
-            </li>
-
-            {/* {token && userRole === "VENDOR" && (
+            {token && userRole === "VENDOR" && (
               <li className="nav-item">
                 <Link className={isActive("/vendor-dashboard")} to="/vendor-dashboard">Vendor Dashboard</Link>
               </li>
-            )} */}
+            )}
+
           </ul>
 
           {token ? (
-            <button className="btn btn-danger" onClick={handleLogout}>
-              Logout
-            </button>
+            <div >
+              <IconButton onClick={handleMenuOpen} id="dropdown-button">
+                <Avatar
+                  style={{ width:"35px", height:"35px" }}
+                  sx={{ bgcolor: "#CB0033", color: "#fff", fontSize: "1.2rem", fontWeight: "bold" }}
+                  alt={user}
+                >
+                  {user ? user.charAt(0).toUpperCase() : "U"}
+                </Avatar>
+
+                <h4 id="username">{user}</h4>
+                <MdArrowDropDown size={24} />
+              </IconButton>
+
+              <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                <Divider /> {/* Separates username from links */}
+
+                {/* Profile & Settings */}
+                <MenuItem component={Link} to="/profile">Profile</MenuItem>
+                <MenuItem component={Link} to="/settings">Settings</MenuItem>
+
+                <Divider /> {/* Separates options from logout */}
+
+                <MenuItem onClick={handleLogout} style={{ color: "red", fontWeight: "bold" }}>
+                  Logout
+                </MenuItem>
+              </Menu>
+            </div>
           ) : (
-            <>
-              <span className="nav-item">
-                <Link className={isActive("/vendor-register")} to="/vendor-register">Are you a Vendor?</Link>
-              </span>
-            </>
+            <span className="nav-item">
+              <Link className={isActive("/vendor-register")} to="/vendor-register">
+                Are you a Vendor?
+              </Link>
+            </span>
           )}
         </div>
       </div>
