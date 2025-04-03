@@ -12,6 +12,8 @@ import ServiceDetails from './components/ServiceDetails/ServiceDetails';
 import ServiceSuccess from './components/Service Success/ServiceSuccess';
 import ProtectedRoute from './Auth/ProtectedRouting';
 import UserLogin from './components/User Login/UserLogin';
+import VendorDetails from './components/Vendor Details/VendorDetails';
+import DisplayVendors from './components/Vendor Display/DisplayVendors';
 
 function App() {
   const [token, setToken] = useState(() => {
@@ -28,10 +30,12 @@ function App() {
         <Navbar token={token} userRole={userRole} setToken={setToken} setUserRole={setUserRole} />
         <Routes>
           <Route path='/' element={<Homepage />} />
-          <Route path='/home' element={<Homepage/>}/>
+          <Route path='/home' element={<Navigate to="/" />}/>
           <Route path='/register-success' element={<RegisterSuccessful />} />
           <Route path='*' element={<Navigate to="/" />} />
           <Route path='/vendor-dashboard' element={<VendorDashboard />} />
+          <Route path='/vendor-list' element={<DisplayVendors />} />
+
 
           {/* Unauthorized Routes */}
           {!token &&
@@ -57,6 +61,7 @@ function App() {
                   {/* <Route path='/login-success' element={<LoginSuccessful />} /> */}
                   <Route path='/service-details' element={<ServiceDetails />} />
                   <Route path='/service-create-success' element={<ServiceSuccess />} />
+                  <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
                 </>
               )
               : (
@@ -69,6 +74,7 @@ function App() {
                   <Route path='/vendor-dashboard' element={<Navigate to="/" />} />
                   <Route path='/service-details' element={<ServiceDetails />} />
                   <Route path='/service-create-success' element={<Navigate to="/" />} />
+                  <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
                 </>
               )}
           </Route>

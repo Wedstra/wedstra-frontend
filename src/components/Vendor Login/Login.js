@@ -29,7 +29,7 @@ const LoginForm = () => {
       progress: undefined,
       theme: "dark",
       transition: Bounce,
-    })) : ((toast.error('Invalid email or password', {
+    })) : ((toast.error('Invalid username or password.', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,

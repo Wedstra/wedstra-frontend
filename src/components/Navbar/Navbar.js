@@ -41,7 +41,7 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
     localStorage.removeItem("role")
     setUserRole(null);
     setToken(null);
-    navigate("/");
+    navigate("/home");
   };
 
   const isActive = (path) => (location.pathname === path ? "nav-link active" : "nav-link");
@@ -66,7 +66,7 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
               <Link className={isActive("/services")} to="/services">Services</Link>
             </li>
             <li className="nav-item">
-              <Link className={isActive("/vendors")} to="/vendors">Vendors</Link>
+              <Link className={isActive("/vendor-list")} to="/vendor-list">Vendors</Link>
             </li>
             <li className="nav-item">
               <Link className={isActive("/vendors")} to="/vendors">Contact</Link>
@@ -85,6 +85,9 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                 </li>
                 <li className="nav-item">
                   <Link className={isActive("/user-login")} to="/user-login">User Login</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className={isActive("/user-register")} to="/user-register">User Registration</Link>
                 </li>
               </>
             )}

@@ -9,6 +9,7 @@ import useAuthCheck from "../../Auth/useAuthCheck";
 import DashboardNav from './Dashboard Navbar/DashboardNav';
 import DashboardEvents from './Dashboard Events/DashboardEvents';
 import VendorServices from './Dashboard Services/VendorServices';
+import VendorChatApp from './Dashboard ChatApp/VendorChatApp';
 
 
 export default function VendorDashboard() {
@@ -57,6 +58,8 @@ export default function VendorDashboard() {
         return <div>Analyatics</div>;
       case "profile":
         return <div>profile</div>;
+      case "messages":
+        return <VendorChatApp/>;
       case "createService":
         return <ServiceForm />;
       default:

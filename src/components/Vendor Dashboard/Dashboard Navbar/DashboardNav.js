@@ -44,9 +44,9 @@ function DashboardNav({ activeTab, setActiveTab, currentUser }) {
               </section>
             </li>
             <li className="nav-item">
-              <section className={`nav-link custom-nav-link ${activeTab === "events" ? "active" : ""}`} id="events" onClick={() => handleNavLinkActive("events")}>
-                <img className="icon" src={events_icon} alt="Events" />
-                <span className="text">Events</span>
+              <section className={`nav-link custom-nav-link ${activeTab === "messages" ? "active" : ""}`} id="messages" onClick={() => handleNavLinkActive("messages")}>
+                <img className="icon" src={events_icon} alt="messages" />
+                <span className="text">Messages</span>
               </section>
             </li>
             <li className="nav-item">
@@ -75,7 +75,6 @@ function DashboardNav({ activeTab, setActiveTab, currentUser }) {
                 <h5 id="user-email">{currentUser ? currentUser.email : "email"}</h5>
               </div>
             </div>
-            <button className="btn btn-dark">Logout</button>
           </div>
         </div>
       </div>

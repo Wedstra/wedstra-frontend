@@ -11,8 +11,9 @@ const useAuthCheck = () => {
     if (!token || isTokenExpired(token)) {
       console.log("Token expired. Logging out...");
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
       localStorage.removeItem("currentUser");// Clear token
-      navigate("/vendor-login"); // Redirect to login page
+      window.location.href = "/home";
     }
   }, [navigate]);
 };

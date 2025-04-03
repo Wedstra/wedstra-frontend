@@ -9,12 +9,21 @@ export default function DisplayVendors({ category, location, goBack }) {
 
   const navigate = useNavigate();
   useEffect(() => {
-    const getServices = async () => {
-      const response = await axiosInstance.get(`/vendor/by-location/${location}/by-category/${category}`);
+    console.log(category, location);
+    
+    const getVendors = async () => {
+      let response = null;
+
+      if(category === undefined && location === undefined){
+        response = await axiosInstance.get(`/vendor/getVendors`);
+      }
+      else{
+        response = await axiosInstance.get(`/vendor/by-location/${location}/by-category/${category}`);
+      }
       setVendors(response.data);
     }
 
-    getServices();
+    getVendors();
   }, []);
 
   const handleGoBack = () => {
@@ -28,19 +37,22 @@ export default function DisplayVendors({ category, location, goBack }) {
 
           {(vendors && vendors.length !== 0)
             ?
-            (<div class="vendor-card d-flex">
-              <img src="https://wedstra25.s3.eu-north-1.amazonaws.com/aadharCard.png" class="vendor-img me-3" alt="Vendor" />
-              <div class="vendor-details">
-                <h5 class="mb-1">Test Stories</h5>
-                <p class="mb-1 text-muted"><strong>Category:</strong> <span class="badge text-bg-warning">Venue</span></p>
-                <p class="mb-1"><strong>Vendor:</strong> test | <strong>Email:</strong> test@gmail.com</p>
-                <p class="mb-1"><strong>City:</strong> Goa | <strong>Phone:</strong> 9284489739</p>
-                <p class="mb-1 text-success">✅ Verified Vendor</p>
-              </div>
-              <div class="vendor-actions text-end">
-                <button class="btn btn-primary">View Details</button>
-              </div>
-            </div>) : (
+            (
+              vendors.map((vendor) => (
+                <div class="vendor-card d-flex">
+                  <img src="https://wedstra25.s3.eu-north-1.amazonaws.com/aadharCard.png" class="vendor-img me-3" alt="Vendor" />
+                  <div class="vendor-details">
+                    <h5 class="mb-1">{ vendor.business_name }</h5>
+                    <p class="mb-1 text-muted"><strong>Category:</strong> <span class="badge text-bg-warning">{ vendor.business_category }</span></p>
+                    <p class="mb-1"><strong>Vendor:</strong> { vendor.vendor_name } | <strong>Email:</strong> { vendor.email }</p>
+                    <p class="mb-1"><strong>City:</strong> { vendor.city } | <strong>Phone:</strong> 9284489739</p>
+                    <p class="mb-1 text-success">✅ Verified Vendor</p>
+                  </div>
+                  <div class="vendor-actions text-end">
+                    {/* <button class="btn btn-primary">View Details</button> */}
+                    <Link className="btn btn-primary" to={`/vendor/${vendor.id}`}>View Details</Link>
+                  </div>
+                </div>))) : (
               <>
                 <section id='no-result-section'>
                   <img src={empty_result} className='img-fluid' />
@@ -49,7 +61,7 @@ export default function DisplayVendors({ category, location, goBack }) {
               </>
             )}
         </div>
-       <button className='btn btn-success back-button' onClick={handleGoBack}>Go to Homepage</button>
+        <button className='btn btn-success back-button' onClick={handleGoBack}>Go to Homepage</button>
       </section>
     </>
   )

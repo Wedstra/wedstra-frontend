@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import axiosInstance from "../../API/axiosInstance";
+import "./userRegister.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Bounce } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     firstName: "",
-    lastName:"",
+    lastName: "",
     username: "",
     email: "",
     password: "",
@@ -19,14 +24,38 @@ const RegistrationForm = () => {
     termsAccepted: false,
   });
 
+  const notify = (status) => {
+    (status == "success") ? (toast.success('User Registration Successful!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    })) : ((toast.error('Registration failed.', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    })))
+  };
+
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : type === "file" ? files[0] : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -43,7 +72,8 @@ const RegistrationForm = () => {
       newErrors.confirmPassword = "Passwords do not match";
     if (!formData.phone.match(/^\d{10,15}$/))
       newErrors.phone = "Phone number must be 10-15 digits";
-    if (!formData.termsAccepted) newErrors.termsAccepted = "You must accept the terms";
+    if (!formData.termsAccepted)
+      newErrors.termsAccepted = "You must accept the terms";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -52,97 +82,105 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // console.log("Form submitted:", formData);
       try {
-        const response =  await axiosInstance.post("/user/register", formData);
-        console.log(response);
-        
-        if(response.status === 201){
-            navigate("/register-success");
-          }
-          else{
-            alert("Registration failed..!");
+        const response = await axiosInstance.post("/user/register", formData);
+        if (response.status === 201) {
+          notify("success");
+          setTimeout(() => {
+            window.location.href = "/user-login";
+          }, 2000);
+        } else {
+          notify("failed");
         }
       } catch (err) {
         console.log(err);
-        
       }
-
-      
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">User Registration</h2>
-      <form onSubmit={handleSubmit} className="p-4 border rounded">
-        <div className="mb-3">
-          <label className="form-label">First Name</label>
-          <input type="text" name="firstName" className="form-control" onChange={handleChange} />
-          {errors.firstName && <div className="text-danger">{errors.firstName}</div>}
-        </div>
+    <div className="container d-flex justify-content-center align-items-center flex-column">
+       <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={true}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              transition={Bounce}
+            />
+      <div className="card shadow-lg p-4 my-2" id="form-card">
+        <h1 className="text-center">User Registration</h1>
+        <form onSubmit={handleSubmit}>
+          {[
+            { label: "First Name", name: "firstName" },
+            { label: "Last Name", name: "lastName" },
+            { label: "Username", name: "username" },
+            { label: "Email", name: "email", type: "email" },
+            { label: "Password", name: "password", type: "password" },
+            { label: "Confirm Password", name: "confirmPassword", type: "password" },
+            { label: "Phone Number", name: "phone" },
+            { label: "Date of Birth", name: "dob", type: "date" },
+          ].map(({ label, name, type = "text" }) => (
+            <div className="mb-3" key={name}>
+              <label className="form-label">{label}</label>
+              <input
+                type={type}
+                name={name}
+                className="form-control"
+                onChange={handleChange}
+              />
+              {errors[name] && <div className="text-danger">{errors[name]}</div>}
+            </div>
+          ))}
 
-        <div className="mb-3">
-          <label className="form-label">Last Name</label>
-          <input type="text" name="lastName" className="form-control" onChange={handleChange} />
-          {errors.lastName && <div className="text-danger">{errors.lastName}</div>}
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Username</label>
-          <input type="text" name="username" className="form-control" onChange={handleChange} />
-          {errors.username && <div className="text-danger">{errors.username}</div>}
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Email</label>
-          <input type="email" name="email" className="form-control" onChange={handleChange} />
-          {errors.email && <div className="text-danger">{errors.email}</div>}
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Password</label>
-          <input type="password" name="password" className="form-control" onChange={handleChange} />
-          {errors.password && <div className="text-danger">{errors.password}</div>}
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Confirm Password</label>
-          <input type="password" name="confirmPassword" className="form-control" onChange={handleChange} />
-          {errors.confirmPassword && <div className="text-danger">{errors.confirmPassword}</div>}
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Phone Number</label>
-          <input type="text" name="phone" className="form-control" onChange={handleChange} />
-          {errors.phone && <div className="text-danger">{errors.phone}</div>}
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Date of Birth</label>
-          <input type="date" name="dob" className="form-control" onChange={handleChange} />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Gender</label>
-          <div>
-            <input type="radio" name="gender" value="Male" onChange={handleChange} /> Male
-            <input type="radio" name="gender" value="Female" onChange={handleChange} /> Female
-            <input type="radio" name="gender" value="Other" onChange={handleChange} /> Other
+          <div className="mb-3">
+            <label className="form-label">Gender</label>
+            <div className="d-flex gap-3">
+              {["Male", "Female", "Other"].map((g) => (
+                <div key={g}>
+                  <input
+                    type="radio"
+                    name="gender"
+                    value={g}
+                    className="form-check-input me-2"
+                    onChange={handleChange}
+                  />
+                  {g}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="mb-3">
-          <label className="form-label">Address</label>
-          <textarea name="address" className="form-control" onChange={handleChange}></textarea>
-        </div>
-        <div className="mb-3">
-          <input type="checkbox" name="termsAccepted" onChange={handleChange} /> I accept the Terms & Conditions
-          {errors.termsAccepted && <div className="text-danger">{errors.termsAccepted}</div>}
-        </div>
+          <div className="mb-3">
+            <label className="form-label">Address</label>
+            <textarea
+              name="address"
+              className="form-control"
+              onChange={handleChange}
+            ></textarea>
+          </div>
 
-        <button type="submit" className="btn btn-primary w-100">Register</button>
-      </form>
+          <div className="mb-3 form-check">
+            <input
+              type="checkbox"
+              name="termsAccepted"
+              className="form-check-input"
+              onChange={handleChange}
+            />
+            <label className="form-check-label ms-2">
+              I accept the Terms & Conditions
+            </label>
+            {errors.termsAccepted && <div className="text-danger">{errors.termsAccepted}</div>}
+          </div>
+
+          <button type="submit" className="btn btn-primary w-100">Register</button>
+        </form>
+      </div>
     </div>
   );
 };
