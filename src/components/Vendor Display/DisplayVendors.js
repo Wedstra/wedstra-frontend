@@ -10,14 +10,14 @@ export default function DisplayVendors({ category, location, goBack }) {
   const navigate = useNavigate();
   useEffect(() => {
     console.log(category, location);
-    
+
     const getVendors = async () => {
       let response = null;
 
-      if(category === undefined && location === undefined){
-        response = await axiosInstance.get(`/vendor/getVendors`);
+      if (category === undefined && location === undefined) {
+        response = await axiosInstance.get(`/vendor/get/verified`);
       }
-      else{
+      else {
         response = await axiosInstance.get(`/vendor/by-location/${location}/by-category/${category}`);
       }
       setVendors(response.data);
@@ -42,11 +42,13 @@ export default function DisplayVendors({ category, location, goBack }) {
                 <div class="vendor-card d-flex">
                   <img src="https://wedstra25.s3.eu-north-1.amazonaws.com/aadharCard.png" class="vendor-img me-3" alt="Vendor" />
                   <div class="vendor-details">
-                    <h5 class="mb-1">{ vendor.business_name }</h5>
-                    <p class="mb-1 text-muted"><strong>Category:</strong> <span class="badge text-bg-warning">{ vendor.business_category }</span></p>
-                    <p class="mb-1"><strong>Vendor:</strong> { vendor.vendor_name } | <strong>Email:</strong> { vendor.email }</p>
-                    <p class="mb-1"><strong>City:</strong> { vendor.city } | <strong>Phone:</strong> 9284489739</p>
-                    <p class="mb-1 text-success">✅ Verified Vendor</p>
+                    <h5 class="mb-1">{vendor.business_name}</h5>
+                    <p class="mb-1 text-muted"><strong>Category:</strong> <span class="badge text-bg-warning">{vendor.business_category}</span></p>
+                    <p class="mb-1"><strong>Vendor:</strong> {vendor.vendor_name} | <strong>Email:</strong> {vendor.email}</p>
+                    <p class="mb-1"><strong>City:</strong> {vendor.city} | <strong>Phone:</strong> 9284489739</p>
+                    <p className={`mb-1 fw-semibold ${vendor.isVerified ? 'text-danger' : 'text-success'}`}>
+                      {vendor.isVerified ? '❌ Not Verified' : '✅ Verified Vendor'}
+                    </p>
                   </div>
                   <div class="vendor-actions text-end">
                     {/* <button class="btn btn-primary">View Details</button> */}

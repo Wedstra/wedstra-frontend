@@ -98,6 +98,12 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
               </li>
             )}
 
+            {token && userRole === "ADMIN" && (
+              <li className="nav-item">
+              <Link className={isActive("/admin-dashboard")} to="/admin-dashboard">Admin Dashboard</Link>
+            </li>
+            )}
+
           </ul>
 
           {token ? (

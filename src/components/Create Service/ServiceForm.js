@@ -6,6 +6,12 @@ import axiosInstance from "../../API/axiosInstance";
 import { fetchCategories } from "../../API/Resources/fetchCategories";
 import { fetchStates } from "../../API/Resources/fetchStates";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Bounce } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { Modal } from "bootstrap";
 
 const ServiceForm = () => {
   const navigator = useNavigate();
@@ -24,6 +30,44 @@ const ServiceForm = () => {
   const [token, setToken] = useState();
   const [categories, setCategories] = useState([]);
   const [states, setStates] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const modalId = "membershipModal";
+
+  useEffect(() => {
+    if (showModal) {
+      // Find modal element
+      const modalElement = document.getElementById(modalId);
+      if (modalElement) {
+        const modalInstance = new Modal(modalElement);
+        modalInstance.show();
+      }
+    }
+  }, [showModal]);
+
+  const notify = (status, message) => {
+    (status == "success") ? (toast.success(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    })) : ((toast.error(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    })))
+  };
+
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -51,19 +95,19 @@ const ServiceForm = () => {
   }, [])
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const requiredFields = ["service_name", "description", "category", "min_price", "max_price", "location"];
 
-        // Check if all required fields are filled
-        const allFieldsFilled = requiredFields.every((field) => serviceData[field]?.trim() !== "");
+    // Check if all required fields are filled
+    const allFieldsFilled = requiredFields.every((field) => serviceData[field]?.trim() !== "");
 
-        // Check if there are no validation errors in required fields
-        const noErrors = requiredFields.every((field) => !errors[field]);
+    // Check if there are no validation errors in required fields
+    const noErrors = requiredFields.every((field) => !errors[field]);
 
-        const fileInput = serviceData.files.length > 0;
+    const fileInput = serviceData.files.length > 0;
 
     setIsDisabled(allFieldsFilled && noErrors && fileInput);
-  },[serviceData, errors, setIsDisabled])
+  }, [serviceData, errors, setIsDisabled])
 
 
   // Handle input changes
@@ -108,7 +152,7 @@ const ServiceForm = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Perform final validation
@@ -139,26 +183,114 @@ const ServiceForm = () => {
     });
 
     try {
-      if (vendorId === undefined || token === undefined) {
-        alert("Vendor_id or token not found. Please login again.");
+      if (!vendorId || !token) {
+        alert("Vendor ID or token not found. Please log in again.");
         return;
       }
-      const response = axiosInstance.post(`/service/${vendorId}/create-service`, formData,
-        {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          }
+
+      const response = await axiosInstance.post(`/service/${vendorId}/create-service`, formData, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         }
-      );
-      navigator('/service-create-success');
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        notify("success", "Service added successfully!");
+        setTimeout(() => {
+          fetchUser();
+          window.location.href = "/vendor-dashboard";
+        }, 2000);
+      }
     } catch (err) {
-      console.log(err);
+      if (err.response) {
+        notify("error", err.response.data);
+        setShowModal(true);
+      } else {
+        notify("error", "Something went wrong. Please try again.")
+      }
     }
+
   };
 
   return (
     <div id="main-div">
+      {/* Bootstrap Modal */}
+      <div className="modal fade" id={modalId} tabIndex="-1" aria-labelledby="pricingModalLabel" aria-hidden="true">
+      <div className="modal-dialog modal-lg">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h1 className="modal-title fs-5" id="pricingModalLabel">
+              Upgrade Your Plan
+            </h1>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div className="modal-body">
+            <div className="row text-center" id="subscription-row">
+              {/* Basic Plan */}
+              <div className="col-md-6" id="basic-plan-col">
+                <div className="card shadow-sm border-0">
+                  <div className="card-body">
+                    <h5 className="card-title">Web, App Access</h5>
+                    <h2 className="fw-bold">$4.99</h2>
+                    <p className="text-muted">per month, billed monthly</p>
+                    <p className="text-muted">Billing starts after the 14-day free trial.</p>
+                    <button className="btn btn-outline-dark w-100">Start Free Trial</button>
+                    <ul className="list-unstyled mt-3">
+                      <li>✔ Unlimited access to Swen</li>
+                      <li>✔ Unrestricted access to the app</li>
+                      <li>✔ Unlimited customizations</li>
+                      <li>✔ Connect Multiple Accounts</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Premium Plan */}
+              <div className="col-md-6" id="premium-plan-col">
+                <div className="card shadow-sm border-0">
+                  <div className="card-body">
+                    <h5 className="card-title">Web, App Access + Printing</h5>
+                    <h2 className="fw-bold">$6.99</h2>
+                    <p className="text-muted">per month, billed monthly</p>
+                    <p className="text-muted">Billing starts after the 14-day free trial.</p>
+                    <button className="btn btn-primary w-100">Start Free Trial</button>
+                    <ul className="list-unstyled mt-3">
+                      <li>✔ Unlimited access to Swen</li>
+                      <li>✔ Unrestricted access to the app</li>
+                      <li>✔ Print edition delivered to your door each week</li>
+                      <li>✔ Unlimited customizations</li>
+                      <li>✔ Connect Multiple Accounts</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <div className="card p-4 shadow">
         <h1 className="text-center mb-4" id="title">Create a New Service</h1>
 
@@ -255,10 +387,10 @@ const ServiceForm = () => {
             >
               <option value="">Select Category</option>
               {states.map((state) => (
-                  <option key={state.state_code} value={state.name}>
-                    {state.name}
-                  </option>
-                ))}
+                <option key={state.state_code} value={state.name}>
+                  {state.name}
+                </option>
+              ))}
             </select>
             {errors.location && <div className="invalid-feedback">{errors.location}</div>}
           </div>
@@ -279,7 +411,7 @@ const ServiceForm = () => {
           </div>
 
           {/* Submit Button */}
-          <button type="submit" className={`btn create-service-btn w-100  ${!isDisabled ? 'disabled' : '' }`}>
+          <button type="submit" className={`btn create-service-btn w-100  ${!isDisabled ? 'disabled' : ''}`}>
             Create Service
           </button>
         </form>

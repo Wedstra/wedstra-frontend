@@ -14,6 +14,8 @@ import ProtectedRoute from './Auth/ProtectedRouting';
 import UserLogin from './components/User Login/UserLogin';
 import VendorDetails from './components/Vendor Details/VendorDetails';
 import DisplayVendors from './components/Vendor Display/DisplayVendors';
+import AdminDashboard from './components/Admin dashboard/AdminDashboard';
+import AuthorizeVendors from './components/Admin dashboard/Authorize Vendors/AuthorizeVendors';
 
 function App() {
   const [token, setToken] = useState(() => {
@@ -30,7 +32,7 @@ function App() {
         <Navbar token={token} userRole={userRole} setToken={setToken} setUserRole={setUserRole} />
         <Routes>
           <Route path='/' element={<Homepage />} />
-          <Route path='/home' element={<Navigate to="/" />}/>
+          <Route path='/home' element={<Navigate to="/" />} />
           <Route path='/register-success' element={<RegisterSuccessful />} />
           <Route path='*' element={<Navigate to="/" />} />
           <Route path='/vendor-dashboard' element={<VendorDashboard />} />
@@ -55,7 +57,7 @@ function App() {
               (
                 // render this routes if Role is Vendor
                 <>
-                <Route path='/' element={<Homepage />} />
+                  <Route path='/' element={<Homepage />} />
                   <Route path='/vendor-login' element={<Navigate to="/" />} />
                   <Route path='/vendor-register' element={<Navigate to="/" />} />
                   {/* <Route path='/login-success' element={<LoginSuccessful />} /> */}
@@ -64,19 +66,31 @@ function App() {
                   <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
                 </>
               )
-              : (
+              : userRole === "USER" ? (
                 //render this routes if Roles is User
                 <>
-                <Route path='/' element={<Homepage />} />
+                  <Route path='/' element={<Homepage />} />
                   <Route path='/vendor-login' element={<Navigate to="/" />} />
                   <Route path='/vendor-register' element={<Navigate to="/" />} />
-                  {/* <Route path='/login-success' element={<LoginSuccessful />} /> */}
                   <Route path='/vendor-dashboard' element={<Navigate to="/" />} />
                   <Route path='/service-details' element={<ServiceDetails />} />
                   <Route path='/service-create-success' element={<Navigate to="/" />} />
                   <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
+                  <Route path='/authorize-vendors' element={<AuthorizeVendors />} />
                 </>
-              )}
+              )
+                : userRole === "ADMIN" ? (
+                  <>
+                    <Route path='/admin-dashboard' element={<AdminDashboard/>} />
+                    <Route path='/authorize-vendors' element={<AuthorizeVendors />} />
+                    <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
+                    <Route path='/service-details' element={<ServiceDetails />} />
+                  </>
+                )
+                  :
+                  (<Route path='/vendor-login' element={<Navigate to="/" />}/>)}
+
+            {userRole === "ADMIN" && <></>}
           </Route>
         </Routes>
       </BrowserRouter>

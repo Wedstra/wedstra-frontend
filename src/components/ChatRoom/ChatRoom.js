@@ -141,7 +141,7 @@ export default function ChatRoom({ vendor, user }) {
     }, [token]);
 
     const connect = () => {
-        let Sock = new SockJS(`http://localhost:8443/ws?token=${token}`);
+        let Sock = new SockJS(`http://localhost:8443/ws`);
         stompClient = over(Sock);
         stompClient.connect({}, onConnected, onError);
     }

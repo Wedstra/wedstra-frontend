@@ -1,0 +1,54 @@
+#admin-dashboard {
+    h1 {
+        font-size: 50px;
+        margin: 20px 0 0 0;
+    }
+
+    .admin-dashboard-container {
+        #analysis-row {
+            height: max-content !important;
+            #value-col {
+                height: max-content !important;
+            }
+        }
+    }
+
+    #users-row {
+        height: max-content;
+
+        #vendors-col {
+            height: max-content;
+        }
+
+        #users-col {
+            height: max-content;
+        }
+    }
+}
+
+.dashboard-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.card-body .display-4 {
+    font-size: 3rem;
+}

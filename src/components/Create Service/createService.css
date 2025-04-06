@@ -64,8 +64,18 @@
       box-shadow: none;
   }
 
-
-
 .form-label{
   font-weight: 600;
+}
+
+#subscription-row{
+  height: max-content;
+}
+
+#basic-plan-col{
+  height: max-content;
+}
+
+#premium-plan-col{
+  height: max-content;
 }
