@@ -37,24 +37,38 @@ export default function DisplayVendors({ category, location, goBack }) {
 
           {(vendors && vendors.length !== 0)
             ?
-            (
-              vendors.map((vendor) => (
-                <div class="vendor-card d-flex">
-                  <img src="https://wedstra25.s3.eu-north-1.amazonaws.com/aadharCard.png" class="vendor-img me-3" alt="Vendor" />
-                  <div class="vendor-details">
-                    <h5 class="mb-1">{vendor.business_name}</h5>
-                    <p class="mb-1 text-muted"><strong>Category:</strong> <span class="badge text-bg-warning">{vendor.business_category}</span></p>
-                    <p class="mb-1"><strong>Vendor:</strong> {vendor.vendor_name} | <strong>Email:</strong> {vendor.email}</p>
-                    <p class="mb-1"><strong>City:</strong> {vendor.city} | <strong>Phone:</strong> 9284489739</p>
+            vendors.map((vendor) => (
+              <div className="card shadow-sm border-0 rounded-4 mb-4 p-3 d-flex flex-row align-items-start justify-content-between" style={{ backgroundColor: '#ffffff' }}>
+                <div className="d-flex">
+                  <img
+                    src="https://wedstra25.s3.eu-north-1.amazonaws.com/aadharCard.png"
+                    className="rounded-3 me-3"
+                    alt="Vendor"
+                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                  />
+                  <div>
+                    <h5 className="mb-1 fw-bold text-dark">{vendor.business_name}</h5>
+                    <p className="mb-1 text-muted">
+                      <strong>Category:</strong> <span className="badge bg-warning text-dark">{vendor.business_category}</span>
+                    </p>
+                    <p className="mb-1">
+                      <strong>Vendor:</strong> {vendor.vendor_name} | <strong>Email:</strong> {vendor.email}
+                    </p>
+                    <p className="mb-1">
+                      <strong>City:</strong> {vendor.city} | <strong>Phone:</strong> {vendor.phone_no}
+                    </p>
                     <p className={`mb-1 fw-semibold ${vendor.isVerified ? 'text-danger' : 'text-success'}`}>
                       {vendor.isVerified ? '❌ Not Verified' : '✅ Verified Vendor'}
                     </p>
                   </div>
-                  <div class="vendor-actions text-end">
-                    {/* <button class="btn btn-primary">View Details</button> */}
-                    <Link className="btn btn-primary" to={`/vendor/${vendor.id}`}>View Details</Link>
-                  </div>
-                </div>))) : (
+                </div>
+                <div className="text-end mt-2">
+                  <Link className="btn btn-danger rounded-3 px-4 py-2" to={`/vendor/${vendor.id}`}>
+                    View Details
+                  </Link>
+                </div>
+              </div>
+            )) : (
               <>
                 <section id='no-result-section'>
                   <img src={empty_result} className='img-fluid' />

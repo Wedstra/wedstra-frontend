@@ -156,7 +156,7 @@ export default function Homepage() {
                   <img src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png" class="card-img-top" alt="..." />
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
-                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p className="">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     <a href="#" className="btn learn-more-btn">Learn More</a>
                   </div>
                 </div>
@@ -166,7 +166,7 @@ export default function Homepage() {
                   <img src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png" className="card-img-top" alt="..." />
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
-                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p className="">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     <a href="#" className="btn learn-more-btn">Learn More</a>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ export default function Homepage() {
                   <img src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png" className="card-img-top" alt="..." />
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
-                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p className="">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     <a href="#" className="btn learn-more-btn">Learn More</a>
                   </div>
                 </div>

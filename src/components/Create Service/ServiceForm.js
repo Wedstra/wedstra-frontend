@@ -198,7 +198,7 @@ const ServiceForm = () => {
       if (response.status === 200 || response.status === 201) {
         notify("success", "Service added successfully!");
         setTimeout(() => {
-          fetchUser();
+          // fetchUser();
           window.location.href = "/vendor-dashboard";
         }, 2000);
       }

@@ -1,13 +1,15 @@
 #chat-btn {
-    position: absolute;
+    position: fixed; /* changed from absolute */
     bottom: 10px;
     left: 10px;
+    z-index: 1000;
 }
 
 #chat-window {
-    position: absolute;
+    position: fixed; /* changed from absolute */
     bottom: 10px;
     left: 10px;
+    z-index: 1001;
 }
 
 #chat-btn:hover {

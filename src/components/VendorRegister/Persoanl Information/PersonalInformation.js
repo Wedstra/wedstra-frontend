@@ -1,8 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import "./personal_info.css";
 import { useDropzone } from "react-dropzone";
+import { fetchStates } from '../../../API/Resources/fetchStates';
+import { fetchCategories } from '../../../API/Resources/fetchCategories';
+
 function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
     const [personalFormData, setPersonalFormData] = useState(formData);
+    const [locations, setLocations] = useState([]);
 
     const [errors, setErrors] = useState({});
 
@@ -49,6 +53,15 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
     };
 
     useEffect(() => {
+        const fetchLocations = async () => {
+            const loc = await fetchStates();
+            setLocations(loc);
+        }
+
+        fetchLocations();
+    }, []);
+
+    useEffect(() => {
         updateFormData(personalFormData);
 
         const requiredFields = ["username", "password", "vendor_name", "email", "phone_no", "city"];
@@ -67,26 +80,6 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
     }, [personalFormData, updateFormData]);
 
     return (
-        // <div className='personal-info-form'>
-        //     <section className='title'>
-        //         <h1>Personal Information</h1>
-        //     </section>
-        //     <div className='form-section'>
-        //         {Object.entries(personalFormData).map(([key, value]) => (
-        //             <div className="mb-3" key={key}>
-        //                 <input
-        //                     type={key === "password" ? "password" : "text"}
-        //                     className={`form-control form-control-lg ${errors[key] ? "is-invalid" : ""}`}
-        //                     name={key}
-        //                     placeholder={key.replace("_", " ").charAt(0).toUpperCase() + key.replace("_", " ").slice(1)}
-        //                     value={value}
-        //                     onChange={handleChange}
-        //                 />
-        //                 {errors[key] && <div className="invalid-feedback">{errors[key]}</div>}
-        //             </div>
-        //         ))}
-        //     </div>
-        // </div>
         <div className='personal-info-form'>
             <section className='title'>
                 <h1>Personal Information</h1>
@@ -100,6 +93,7 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
                         placeholder="Username"
                         value={formData.username || ""}
                         onChange={handleChange}
+                        autoComplete='off'
                     />
                     {errors["username"] && <div className="invalid-feedback">{errors["username"]}</div>}
                 </div>
@@ -112,6 +106,7 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
                         placeholder="Password"
                         value={formData.password || ""}
                         onChange={handleChange}
+                        autoComplete='off'
                     />
                     {errors["password"] && <div className="invalid-feedback">{errors["password"]}</div>}
                 </div>
@@ -124,6 +119,7 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
                         placeholder="Vendor_name"
                         value={formData.vendor_name || ""}
                         onChange={handleChange}
+                        autoComplete='off'
                     />
                     {errors["vendor_name"] && <div className="invalid-feedback">{errors["vendor_name"]}</div>}
                 </div>
@@ -136,6 +132,7 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
                         placeholder="Email"
                         value={formData.email || ""}
                         onChange={handleChange}
+                        autoComplete='off'
                     />
                     {errors["email"] && <div className="invalid-feedback">{errors["email"]}</div>}
                 </div>
@@ -148,21 +145,29 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
                         placeholder="Phone Number"
                         value={formData.phone_no || ""}
                         onChange={handleChange}
+                        autoComplete='off'
                     />
                     {errors["phone_no"] && <div className="invalid-feedback">{errors["phone_no"]}</div>}
                 </div>
 
                 <div className="mb-3">
-                    <input
-                        type="text"
+                    <select
                         className={`form-control form-control-lg ${errors["city"] ? "is-invalid" : ""}`}
                         name="city"
-                        placeholder="City"
                         value={formData.city || ""}
                         onChange={handleChange}
-                    />
+                    >
+                        <option value="" disabled>Select a city</option>
+                        {locations.map((state) => (
+                            <option key={state.state_code} value={state.name}>
+                                {state.name}
+                            </option>
+                        ))}
+                        {/* Add other cities here */}
+                    </select>
                     {errors["city"] && <div className="invalid-feedback">{errors["city"]}</div>}
                 </div>
+
             </div>
         </div>
     );
@@ -170,18 +175,26 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
 
 function BusinessInformation({ formData, updateFormData, setPersonalNext }) {
     const [businessFormData, setBusinessFormData] = useState(formData);
-    // const [businessFormData, setBusinessFormData] = useState({
-    //     business_name: '',
-    //     business_category: '',
-    //     gst_number: '',
-    //     terms_and_conditions: ''
-    // });
-
     const [errors, setErrors] = useState({});
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         setPersonalNext(false);
-    }, [])
+
+        const fetchCategory = async () => {
+            const cat = await fetchCategories();
+            setCategories(cat)
+        }
+
+        // fetchUser();
+        fetchCategory();
+
+        const message = sessionStorage.getItem("message");
+        if (message) {
+            setOpen(true);
+        }
+
+    }, []);
 
     useEffect(() => {
         updateFormData(businessFormData);
@@ -251,6 +264,7 @@ function BusinessInformation({ formData, updateFormData, setPersonalNext }) {
                         placeholder="Business name"
                         value={formData.business_name || ""}
                         onChange={handleChange}
+                        autoComplete='off'
                     />
                     {errors["business_name"] && <div className="invalid-feedback">{errors["business_name"]}</div>}
                 </div>
@@ -258,16 +272,26 @@ function BusinessInformation({ formData, updateFormData, setPersonalNext }) {
 
 
                 <div className="mb-3">
-                    <input
-                        type="text"
+                    <select
                         className={`form-control form-control-lg ${errors["business_category"] ? "is-invalid" : ""}`}
                         name="business_category"
-                        placeholder="Business Category"
                         value={formData.business_category || ""}
                         onChange={handleChange}
-                    />
-                    {errors["business_category"] && <div className="invalid-feedback">{errors["business_category"]}</div>}
+                        autoComplete='off'
+                    >
+                        <option value="">Select Business Category</option>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.category_name}>
+                              {category.category_name}
+                            </option>
+                          ))}
+                        {/* Add more categories as needed */}
+                    </select>
+                    {errors["business_category"] && (
+                        <div className="invalid-feedback">{errors["business_category"]}</div>
+                    )}
                 </div>
+
 
                 <div className="mb-3">
                     <input
@@ -277,6 +301,7 @@ function BusinessInformation({ formData, updateFormData, setPersonalNext }) {
                         placeholder="GST Number"
                         value={formData.gst_number || ""}
                         onChange={handleChange}
+                        autoComplete='off'
                     />
                     {errors["gst_number"] && <div className="invalid-feedback">{errors["gst_number"]}</div>}
                 </div>
@@ -290,6 +315,7 @@ function BusinessInformation({ formData, updateFormData, setPersonalNext }) {
                         placeholder="Terms & Conditions"
                         value={formData.terms_and_conditions || ""}
                         onChange={handleChange}
+                        autoComplete='off'
                     />
                     {errors["terms_and_conditions"] && <div className="invalid-feedback">{errors["terms_and_conditions"]}</div>}
                 </div>
@@ -300,14 +326,6 @@ function BusinessInformation({ formData, updateFormData, setPersonalNext }) {
 
 
 function DocumentUpload({ formData, updateFormData, setPersonalNext }) {
-    // const [uploadedDocuments, setUploadedDocuments] = useState({
-    //     vendor_aadharCard: null,
-    //     vendor_PAN: null,
-    //     business_PAN: null,
-    //     electricity_bill: null,
-    //     business_photos: null,
-    //     liscence: null
-    // });
 
     const [uploadedDocuments, setUploadedDocuments] = useState(formData);
     const [errors, setErrors] = useState({});

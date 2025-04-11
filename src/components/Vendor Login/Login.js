@@ -114,11 +114,11 @@ const LoginForm = () => {
               <form onSubmit={handleLogin}>
                 <InputLabel htmlFor="outlined-required" className="label" >Username</InputLabel>
                 <input type="text" className="form-control input-field" placeholder="Enter username" value={username}
-                  onChange={(e) => setUsername(e.target.value)} required />
+                  onChange={(e) => setUsername(e.target.value)} required autoComplete='off' />
 
                 <InputLabel htmlFor="outlined-required" className="label" >Password</InputLabel>
                 <input type="password" className="form-control input-field" placeholder="••••••••" value={password}
-                  onChange={(e) => setPassword(e.target.value)} required />
+                  onChange={(e) => setPassword(e.target.value)} required autoComplete='off' />
 
                 <button
                   type="submit"
