@@ -77,7 +77,7 @@ const LoginForm = () => {
         notify("success");
         setTimeout(() => {
           fetchUser();
-          window.location.href = "/";
+          window.location.href = "/vendor-dashboard";
         }, 2000);
       }
       else {

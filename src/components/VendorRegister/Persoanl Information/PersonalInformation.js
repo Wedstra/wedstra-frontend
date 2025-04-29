@@ -214,8 +214,16 @@ function BusinessInformation({ formData, updateFormData, setPersonalNext }) {
                 break;
 
             case "gst_number":
-                if (!value.trim()) error = "GST Number are required";
+                if (!value.trim()) {
+                    error = "GST Number is required";
+                } else {
+                    const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}Z[A-Z0-9]{1}$/;
+                    if (!gstRegex.test(value)) {
+                        error = "Invalid GST Number format";
+                    }
+                }
                 break;
+
             default:
                 break;
         }
@@ -282,9 +290,9 @@ function BusinessInformation({ formData, updateFormData, setPersonalNext }) {
                         <option value="">Select Business Category</option>
                         {categories.map((category) => (
                             <option key={category.id} value={category.category_name}>
-                              {category.category_name}
+                                {category.category_name}
                             </option>
-                          ))}
+                        ))}
                         {/* Add more categories as needed */}
                     </select>
                     {errors["business_category"] && (
@@ -434,7 +442,7 @@ function DocumentUpload({ formData, updateFormData, setPersonalNext }) {
 
                 {/* liscence */}
                 <FileUpload
-                    label="liscence"
+                    label="Liscence"
                     file={uploadedDocuments["liscence"]}
                     onDrop={handleFileDrop("liscence", false)}
                     onRemove={() => handleFileRemove("liscence")}
@@ -444,17 +452,19 @@ function DocumentUpload({ formData, updateFormData, setPersonalNext }) {
                 {/* Business Photos Upload */}
                 <FileUpload
                     label="Business Photos"
+                    subLabel="(Include at least 1 vendor's photo also)"
                     file={uploadedDocuments["business_photos"]}
                     onDrop={handleFileDrop("business_photos", true)}
                     onRemove={(index) => handleMultipleFileRemove("business_photos", index)}
                     isLastFileUpload={true}
                 />
+
             </section>
         </div>
     );
 };
 
-const FileUpload = ({ label, file, onDrop, onRemove, isLastFileUpload }) => {
+const FileUpload = ({ label, subLabel, file, onDrop, onRemove, isLastFileUpload }) => {
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         accept: "image/*,application/pdf",
@@ -464,7 +474,14 @@ const FileUpload = ({ label, file, onDrop, onRemove, isLastFileUpload }) => {
 
     return (
         <div className="file-upload">
-            <label className="file-label">{label}</label>
+           <label className='file-label' style={{ fontWeight: "bold" }}>
+        {label}
+        {subLabel && (
+          <small style={{ display: "block", color: "gray", fontSize: "0.8rem", marginTop: "2px" }}>
+            {subLabel}
+          </small>
+        )}
+      </label>
             <div {...getRootProps()} className="dropzone">
                 <input {...getInputProps()} />
                 <span className="title">Choose a file or drag & drop it here</span>

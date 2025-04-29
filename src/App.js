@@ -16,6 +16,8 @@ import VendorDetails from './components/Vendor Details/VendorDetails';
 import DisplayVendors from './components/Vendor Display/DisplayVendors';
 import AdminDashboard from './components/Admin dashboard/AdminDashboard';
 import AuthorizeVendors from './components/Admin dashboard/Authorize Vendors/AuthorizeVendors';
+import VendorPlans from './components/Vendor plans/VendorPlans';
+import UserTask from './components/User Tasks/UserTask';
 
 function App() {
   const [token, setToken] = useState(() => {
@@ -35,8 +37,8 @@ function App() {
           <Route path='/home' element={<Navigate to="/" />} />
           <Route path='/register-success' element={<RegisterSuccessful />} />
           <Route path='*' element={<Navigate to="/" />} />
-          <Route path='/vendor-dashboard' element={<VendorDashboard />} />
           <Route path='/vendor-list' element={<DisplayVendors />} />
+          <Route path='/vendor-plans' element={<VendorPlans />} />
 
 
           {/* Unauthorized Routes */}
@@ -60,10 +62,10 @@ function App() {
                   <Route path='/' element={<Homepage />} />
                   <Route path='/vendor-login' element={<Navigate to="/" />} />
                   <Route path='/vendor-register' element={<Navigate to="/" />} />
-                  {/* <Route path='/login-success' element={<LoginSuccessful />} /> */}
                   <Route path='/service-details' element={<ServiceDetails />} />
                   <Route path='/service-create-success' element={<ServiceSuccess />} />
                   <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
+                  <Route path='/vendor-dashboard' element={<VendorDashboard />} />
                 </>
               )
               : userRole === "USER" ? (
@@ -77,6 +79,7 @@ function App() {
                   <Route path='/service-create-success' element={<Navigate to="/" />} />
                   <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
                   <Route path='/authorize-vendors' element={<AuthorizeVendors />} />
+                  <Route path='/user-tasks' element={<UserTask />} />
                 </>
               )
                 : userRole === "ADMIN" ? (

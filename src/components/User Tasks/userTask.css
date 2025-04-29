@@ -1,0 +1,5 @@
+.Success-checkbox:checked {
+    background-color: #198754; /* Bootstrap success green */
+    border-color: #198754;
+  }
+  
