@@ -3,11 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Menu, MenuItem, Avatar, IconButton, Divider, Typography } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 import { MdArrowDropDown } from "react-icons/md";
+import { fetchCategories } from '../../API/Resources/fetchCategories';
 import "./navbar.css";
 import logo from "../../images/wedstra_logo.png";
 const Navbar = ({ token, userRole, setToken, setUserRole }) => {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -63,24 +65,23 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
   ];
 
   useEffect(() => {
-    // Manual handling for second-level dropdown toggle
-    const dropdownSubmenus = document.querySelectorAll('.dropdown-submenu > a');
+    const fetchCategory = async () => {
+      const cat = await fetchCategories();
+      setCategories(cat)
+    }
 
-    dropdownSubmenus.forEach((submenu) => {
-      submenu.addEventListener('click', function (e) {
-        e.preventDefault();
-        const nextDropdown = this.nextElementSibling;
-        if (nextDropdown) {
-          nextDropdown.classList.toggle('show');
-        }
-      });
-    });
+
+    fetchCategory()
   }, []);
 
   const toggleSubmenu = (index) => {
     setOpenStateIndex(openStateIndex === index ? null : index);
   };
 
+
+  const openCategory = () => {
+    
+  }
   return (
     <nav className="navbar navbar-expand-lg" id="navbar">
       <div className="container">
@@ -163,7 +164,7 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                     </Link>
 
                     <ul className="dropdown-menu">
-                      {states.map((state, index) => (
+                      {/* {states.map((state, index) => (
                         <li key={index} className="dropdown-submenu position-relative">
                           <div
                             className="dropdown-item dropdown-toggle"
@@ -185,7 +186,12 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                             ))}
                           </ul>
                         </li>
-                      ))}
+                      ))} */}
+                      {categories.map((category) => (
+                            <option className="py-1 px-3" key={category.id} value={category.category_name} onClick={ openCategory } >
+                              {category.category_name}
+                            </option>
+                          ))}
                     </ul>
                   </div>
                 </li>
