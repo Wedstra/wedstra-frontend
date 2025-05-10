@@ -18,6 +18,7 @@ import AdminDashboard from './components/Admin dashboard/AdminDashboard';
 import AuthorizeVendors from './components/Admin dashboard/Authorize Vendors/AuthorizeVendors';
 import VendorPlans from './components/Vendor plans/VendorPlans';
 import UserTask from './components/User Tasks/UserTask';
+import Blogs from './components/Blogs/Blogs';
 
 function App() {
   const [token, setToken] = useState(() => {
@@ -66,6 +67,7 @@ function App() {
                   <Route path='/service-create-success' element={<ServiceSuccess />} />
                   <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
                   <Route path='/vendor-dashboard' element={<VendorDashboard />} />
+                  <Route path='/blogs' element={<Blogs />} />
                 </>
               )
               : userRole === "USER" ? (
@@ -80,6 +82,7 @@ function App() {
                   <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
                   <Route path='/authorize-vendors' element={<AuthorizeVendors />} />
                   <Route path='/user-tasks' element={<UserTask />} />
+                  <Route path='/blogs' element={<Blogs />} />
                 </>
               )
                 : userRole === "ADMIN" ? (
@@ -88,6 +91,7 @@ function App() {
                     <Route path='/authorize-vendors' element={<AuthorizeVendors />} />
                     <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
                     <Route path='/service-details' element={<ServiceDetails />} />
+                    <Route path='/blogs' element={<Blogs />} />
                   </>
                 )
                   :
