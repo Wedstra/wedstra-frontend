@@ -1,0 +1,97 @@
+.profile-container {
+  width: 80%;
+  max-width: 1000px;
+  margin: 40px auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', sans-serif;
+  padding: 30px;
+}
+
+.profile-header {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-right: 30px;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #222;
+}
+
+.profile-info .designation {
+  color: #007bff;
+  margin: 4px 0;
+}
+
+.profile-info .rating {
+  color: #444;
+  margin: 4px 0;
+}
+
+.action-buttons {
+  margin-top: 12px;
+}
+
+.message-btn,
+.contact-btn {
+  border: none;
+  padding: 8px 16px;
+  margin-right: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.message-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.contact-btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.profile-content {
+  display: flex;
+  margin-top: 30px;
+}
+
+.left-column,
+.right-column {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.left-column {
+  border-right: 1px solid #eee;
+}
+
+.work-section,
+.skills-section,
+.contact-info,
+.basic-info {
+  margin-bottom: 20px;
+}
+
+h4 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #666;
+}
+
+p {
+  margin: 4px 0;
+  color: #333;
+}

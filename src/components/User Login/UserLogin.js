@@ -1,13 +1,3 @@
-// import React, { useState } from 'react'
-// import "./userLogin.css";
-// import { InputLabel } from '@mui/material';
-// import { Link } from 'react-router-dom';
-// import axiosInstance from "../../API/axiosInstance";
-// import { getCurrentUser } from "../../Auth/UserServices";
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// import { Bounce } from 'react-toastify';
-// import { ToastContainer } from 'react-toastify';
 import React, { useState } from "react";
 import { Link, Route, useNavigate } from "react-router-dom";
 import axiosInstance from "../../API/axiosInstance";
@@ -17,6 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Bounce } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import { IoEye, IoEyeOff } from "react-icons/io5";
 import "./userLogin.css";
 
 export default function UserLogin() {
@@ -25,6 +16,7 @@ export default function UserLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const notify = (status) => {
@@ -96,6 +88,10 @@ export default function UserLogin() {
     setLoading(false);
   };
 
+
+  const toggleVisibility = () => {
+    setPasswordVisible((prev) => !prev);
+  };
   return (
     <>
       <ToastContainer
@@ -120,12 +116,25 @@ export default function UserLogin() {
               <form onSubmit={handleLogin}>
                 <InputLabel htmlFor="outlined-required" className="label" >Username</InputLabel>
                 <input type="text" className="form-control input-field" placeholder="Enter username" value={username}
-                  onChange={(e) => setUsername(e.target.value)} required autoComplete='off'/>
+                  onChange={(e) => setUsername(e.target.value)} required autoComplete='off' />
 
                 <InputLabel htmlFor="outlined-required" className="label" >Password</InputLabel>
-                <input type="password" className="form-control input-field" placeholder="••••••••" value={password}
-                  onChange={(e) => setPassword(e.target.value)} required autoComplete='off'/>
-
+                <section className="position-relative">
+                  <input type={passwordVisible ? "text" : "password"} className="form-control input-field" placeholder="••••••••" value={password}
+                    onChange={(e) => setPassword(e.target.value)} required autoComplete='off' />
+                  <span
+                    onClick={toggleVisibility}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "10px",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer"
+                    }}
+                  >
+                    {passwordVisible ? <IoEyeOff size={23} id="eye-icon" /> : <IoEye size={23} id="eye-icon" />}
+                  </span>
+                </section>
                 <button
                   type="submit"
                   className={`btn login-btn ${loading ? "disabled" : ""}`}
