@@ -4,20 +4,22 @@ import './displayVendor.css';
 
 import empty_result from "../../images/empty-rresult.png";
 import { Link, useNavigate } from 'react-router-dom';
-export default function DisplayVendors({ category, location, goBack }) {
+export default function DisplayVendors({ category, location, goBack, setCategory, setLocation,setState }) {
   const [vendors, setVendors] = useState([]);
 
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(category, location);
-
     const getVendors = async () => {
       let response = null;
 
-      if (category === undefined && location === undefined) {
+      if (location === null && category !== null) {
+        // Only location is null
+        response = await axiosInstance.get(`/vendor/verified/by-category/${category}`);
+      } else if (location === null && category === null) {
+        // Both are null
         response = await axiosInstance.get(`/vendor/get/verified`);
-      }
-      else {
+      } else if (location !== null && category !== null) {
+        // Both are defined
         response = await axiosInstance.get(`/vendor/by-location/${location}/by-category/${category}`);
       }
       setVendors(response.data);
@@ -27,6 +29,9 @@ export default function DisplayVendors({ category, location, goBack }) {
   }, []);
 
   const handleGoBack = () => {
+    setCategory(null);
+    setLocation(null);
+    setState(null);
     goBack(false);
   }
   return (

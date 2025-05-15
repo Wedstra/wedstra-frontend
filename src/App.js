@@ -16,9 +16,12 @@ import VendorDetails from './components/Vendor Details/VendorDetails';
 import DisplayVendors from './components/Vendor Display/DisplayVendors';
 import AdminDashboard from './components/Admin dashboard/AdminDashboard';
 import AuthorizeVendors from './components/Admin dashboard/Authorize Vendors/AuthorizeVendors';
-import VendorPlans from './components/Vendor plans/VendorPlans';
 import UserTask from './components/User Tasks/UserTask';
 import Blogs from './components/Blogs/Blogs';
+import UserPlans from './components/UserPlans/UserPlans';
+import Reviews from './components/Reviews/Reviews';
+import profile from './components/Profile/profile';
+import Profile from './components/Profile/profile';
 
 function App() {
   const [token, setToken] = useState(() => {
@@ -39,7 +42,9 @@ function App() {
           <Route path='/register-success' element={<RegisterSuccessful />} />
           <Route path='*' element={<Navigate to="/" />} />
           <Route path='/vendor-list' element={<DisplayVendors />} />
-          <Route path='/vendor-plans' element={<VendorPlans />} />
+          <Route path='/vendor-plans' element={<UserPlans />} />
+          <Route path='/reviews' element={<Reviews />} />
+          <Route path='/profile' element={<Profile/>} />
 
 
           {/* Unauthorized Routes */}

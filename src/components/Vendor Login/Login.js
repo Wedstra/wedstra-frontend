@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Bounce } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import { IoEye, IoEyeOff } from "react-icons/io5";
 import "./login.css";
 
 
@@ -15,6 +16,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const navigate = useNavigate();
 
@@ -90,6 +92,11 @@ const LoginForm = () => {
     setLoading(false);
   };
 
+
+  const toggleVisibility = () => {
+    setPasswordVisible((prev) => !prev);
+  };
+
   return (
     <>
       <ToastContainer
@@ -117,9 +124,22 @@ const LoginForm = () => {
                   onChange={(e) => setUsername(e.target.value)} required autoComplete='off' />
 
                 <InputLabel htmlFor="outlined-required" className="label" >Password</InputLabel>
-                <input type="password" className="form-control input-field" placeholder="••••••••" value={password}
-                  onChange={(e) => setPassword(e.target.value)} required autoComplete='off' />
-
+                <section className="position-relative">
+                  <input type={passwordVisible ? "text" : "password"} className="form-control input-field" placeholder="••••••••" value={password}
+                    onChange={(e) => setPassword(e.target.value)} required autoComplete='off' />
+                  <span
+                    onClick={toggleVisibility}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "10px",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer"
+                    }}
+                  >
+                    {passwordVisible ? <IoEyeOff size={23} id="eye-icon" /> : <IoEye size={23} id="eye-icon" />}
+                  </span>
+                </section>
                 <button
                   type="submit"
                   className={`btn login-btn ${loading ? "disabled" : ""}`}

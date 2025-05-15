@@ -1,8 +1,8 @@
 import axiosInstance from "../axiosInstance";
 
-export const fetchStates = async () => {
+export const fetchCities = async (state) => {
     try {
-        const response = await axiosInstance.get("/location/states");
+        const response = await axiosInstance.get(`/location/cities?state=${ state }`);
 
         if(response.status === 200){
             return response.data;
