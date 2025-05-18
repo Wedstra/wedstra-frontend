@@ -1,0 +1,132 @@
+.profile-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Center content */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #eee;
+  margin-bottom: 1rem;
+}
+
+.profile-info h2 {
+  margin-bottom: 0.3rem;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.designation {
+  color: #777;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Buttons with icons */
+.icon-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.edit-btn,
+.wishlist-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.wishlist-btn {
+  background-color: #e91e63;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+.wishlist-btn:hover {
+  background-color: #c2185b;
+}
+
+/* Info sections */
+.profile-content {
+  margin-top: 2rem;
+}
+
+.info-section > div {
+  background-color: #f8f9fa;
+  margin-bottom: 1.5rem;
+  padding: 1.2rem;
+  border-radius: 10px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-section h4 {
+  margin-bottom: 0.5rem;
+  color: #444;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.3rem;
+}
+
+.info-section p {
+  margin: 0.4rem 0;
+  color: #555;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  background-color: #CB0033;
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+
+@media (max-width: 600px) {
+  .icon-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .edit-btn,
+  .wishlist-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

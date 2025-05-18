@@ -3,18 +3,23 @@ import { getCurrentUser, findUserDetailsByUserName } from "../../Auth/UserServic
 import "./homepage.css";
 import { fetchStates } from '../../API/Resources/fetchStates';
 import { fetchCategories } from '../../API/Resources/fetchCategories';
+import { fetchCities } from '../../API/Resources/fetchCities';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 import images from "../../Resources/images";
 
 import DisplayVendors from '../Vendor Display/DisplayVendors';
 import { useNavigate } from 'react-router-dom';
+import ReviewSection from '../Reviews/Reviews';
 
 export default function Homepage() {
   const [categories, setCategories] = useState([]);
-  const [locations, setLocations] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showServices, setShowServices] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [selectedCity, setselectedCity] = useState(null);
+  const [selectedState, setSelectedState] = useState(null);
   const items = [
     { title: "Mehndi Artists", image: images.mehendi },
     { title: "Makeup", image: images.makeup },
@@ -33,28 +38,19 @@ export default function Homepage() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getCurrentUser(); // Get the current user
-      if (user) {
-        localStorage.setItem("currentUser", JSON.stringify(user)); // Store in localStorage
-        setCurrentUser(user);
-        setUserRole(user.role);
-      }
-    }
-
     const fetchCategory = async () => {
       const cat = await fetchCategories();
       setCategories(cat)
     }
 
-    const fetchLocations = async () => {
+    const fetchstates = async () => {
       const loc = await fetchStates();
-      setLocations(loc);
+      setStates(loc);
     }
 
-    // fetchUser();
+
     fetchCategory();
-    fetchLocations();
+    fetchstates();
 
     const message = sessionStorage.getItem("message");
     if (message) {
@@ -63,20 +59,55 @@ export default function Homepage() {
 
   }, []);
 
+  useEffect(() => {
+    const getCitiesByState = async () => {
+      if (selectedState) {
+        try {
+          const response = await fetchCities(selectedState);
+          setCities(response); 
+        } catch (error) {
+          console.error("Error fetching cities:", error);
+          setCities([]); 
+        }
+      } else {
+        setCities([]); 
+      }
+    };
+
+    getCitiesByState();
+  }, [selectedState]);
+
+
 
   const handleChange = (name, event) => {
     const value = event.target.value;
-    if (name == "location") {
-      setSelectedLocation(value)
+
+    // console.log(value);
+
+    if (name == "state") {
+      setSelectedState(value);
+    }
+
+    if (name == "city") {
+      setselectedCity(value);
     }
 
     if (name == "category") {
       setSelectedCategory(value);
     }
+
   }
 
   const findVendors = () => {
-    console.log(selectedCategory, selectedLocation);
+    console.log("Selected city: " + selectedCity);
+    console.log("Selected state: " + selectedState);
+    console.log("Selected category: " + selectedCategory);
+    setShowServices(true);
+  }
+
+  const openVendorByCategory = (category) => {
+    console.log(category);
+    setSelectedCategory(category);
     setShowServices(true);
   }
   return (
@@ -91,25 +122,61 @@ export default function Homepage() {
               <div id="vendor-filter">
 
                 <div class="container text-center">
-                  <div class="row" style={{ height: "max-content" }}>
-                    <div class="col-md-5 m-0" style={{ height: "max-content" }}>
-                      <section id='location-select-section'>
-                        <img src={ images.locationLogo} id='location-icon' />
-                        <select class="form-select form-select-lg" aria-label="Large select example" id='location-select' onChange={(e) => handleChange("location", e)}>
-                          <option selected>Select a Location</option>
-                          {locations.map((state) => (
-                            <option key={state.state_code} value={state.name}>
-                              {state.name}
+                  <div className="row" style={{ height: "max-content", width: "100%" }}>
+                    {/* State Dropdown */}
+                    <div className={selectedState ? 'col-md-4 m-0' : 'col-md-5 m-0'} style={{ height: "max-content" }}>
+                      <section id="location-select-section">
+                        <img src={images.locationLogo} id="location-icon" />
+                        <select
+                          className="form-select form-select-lg"
+                          aria-label="Large select example"
+                          id="location-select"
+                          onChange={(e) => handleChange("state", e)}
+                        >
+                          <option value="">Select a State</option>
+                          {states.map((state) => (
+                            <option key={state} value={state}>
+                              {state}
                             </option>
                           ))}
                         </select>
                       </section>
                     </div>
-                    <div class="col-md-5 m-0" style={{ height: "max-content" }}>
-                      <section id='location-select-section'>
-                        <img src={images.vendorLogo} id='location-icon' />
-                        <select class="form-select form-select-lg" aria-label="Large select example" id='category-select' onChange={(e) => handleChange("category", e)}>
-                          <option selected>Select a Category</option>
+
+                    {/* City Dropdown */}
+                    {selectedState && (
+                      <div className={'col-md-4 m-0'} style={{ height: "max-content" }}>
+                        <section id="location-select-section">
+                          <img src={images.cityLogo} id="location-icon" />
+                          <select
+                            className="form-select form-select-lg"
+                            aria-label="Large select example"
+                            id="city-select"
+                            onChange={(e) => handleChange("city", e)}
+                            disabled={!cities.length} // disable when no cities
+                          >
+                            <option value="">Select a City</option>
+                            {cities.map((city, index) => (
+                              <option key={index} value={city}>
+                                {city}
+                              </option>
+                            ))}
+                          </select>
+                        </section>
+                      </div>
+                    )}
+
+                    {/* Category Dropdown */}
+                    <div className={selectedState ? 'col-md-4 m-0' : 'col-md-5 m-0'} style={{ height: "max-content" }}>
+                      <section id="location-select-section">
+                        <img src={images.vendorLogo} id="location-icon" />
+                        <select
+                          className="form-select form-select-lg"
+                          aria-label="Large select example"
+                          id="category-select"
+                          onChange={(e) => handleChange("category", e)}
+                        >
+                          <option value="">Select a Category</option>
                           {categories.map((category) => (
                             <option key={category.id} value={category.category_name}>
                               {category.category_name}
@@ -118,8 +185,15 @@ export default function Homepage() {
                         </select>
                       </section>
                     </div>
-                    <div class="col-md-2 m-0">
-                      <button type="button" id="find-vendor-btn" class="btn btn-lg" onClick={findVendors}>
+
+                    {/* Button */}
+                    <div className={selectedState ? 'col-md-12 mt-3 d-flex justify-content-center' : 'col-md-2 m-0'}>
+                      <button
+                        type="button"
+                        id="find-vendor-btn"
+                        className="btn btn-lg"
+                        onClick={findVendors}
+                      >
                         <section>
                           <span style={{ paddingTop: "2px" }}>Find Vendor </span>
                           <img src={images.rightArrow} style={{ height: "27px", paddingBottom: "2px" }} />
@@ -139,7 +213,8 @@ export default function Homepage() {
               <div key={rowIndex} className="row" style={{ height: "max-content" }}>
                 {items.slice(startIndex, startIndex + 6).map((item, index) => (
                   <div key={index} className="col-6 col-md-4 col-lg-2 d-flex flex-column align-items-center" style={{ height: "max-content" }}>
-                    <img src={item.image} alt={item.title} style={{ width: "90%" }} id='category-image-avatar' />
+                    <img src={item.image} alt={item.title} style={{ width: "90%" }} id='category-image-avatar' onClick={() => openVendorByCategory(item.title)}
+                    />
                     <p className="text-center mt-2" id='categort-name'>{item.title}</p>
                   </div>
                 ))}
@@ -187,39 +262,63 @@ export default function Homepage() {
           {/* Exclusive Offers */}
           <div id='exclusive-offers-container'>
             <h3 id='exclusive-offer-title'>Exclusive Wedding Deals</h3>
-            {/* <div className="row mb-4" style={{ height: "max-content" }}>
-          <div className="col-12 col-sm-6 col-lg-4">
-            <div className='card' id='body'>
-              <div className="overlap-wrapper">
-                <div className="overlap-2">
-                  <img className="vector" alt="Vector" src={special_offer} />
-                </div>
+            <div className="exclusive-offer-cards">
+              <div className='exclusive-card special-offer'>
+                <img className="group" alt="Group" src={images.specialOffer} />
+                <h3>Videography plan</h3>
+                <p className="discount-line">
+                  up to <span className="highlight">30% off</span>
+                </p>
+
+                <ul className="features-list">
+                  <li>Candid shots.</li>
+                  <li>cinematic wedding films.</li>
+                  <li>Short Videos.</li>
+                  <li>Photo Book</li>
+                </ul>
+
+                <button className="learn-btn">Learn more</button>
+              </div>
+
+              <div className='exclusive-card special-offer'>
+                <img className="group" alt="Group" src={images.specialOffer} />
+                <h3>Photography plan</h3>
+                <p className="discount-line">
+                  up to <span className="highlight">30% off</span>
+                </p>
+                <ul className="features-list">
+                  <li>Candid shots.</li>
+                  <li>cinematic wedding films.</li>
+                  <li>Short Videos.</li>
+                  <li>Photo Book</li>
+                </ul>
+                <button className="learn-btn">Learn more</button>
+              </div>
+
+              <div className='exclusive-card special-offer'>
+                <img className="group" alt="Group" src={images.specialOffer} />
+                <h3>Food plan</h3>
+                <p className="discount-line">
+                  up to <span className="highlight">30% off</span>
+                </p>
+
+                <ul className="features-list">
+                  <li>Candid shots.</li>
+                  <li>cinematic wedding films.</li>
+                  <li>Short Videos.</li>
+                  <li>Photo Book</li>
+                </ul>
+
+                <button className="learn-btn">Learn more</button>
               </div>
             </div>
-          </div>
-          <div className="col-sm-6 col-md-6 col-lg-4">
-            <div className="card" >
-              <img src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Card title</h5>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" className="btn learn-more-btn">Learn More</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-6 col-lg-4">
-            <div className="card" >
-              <img src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Card title</h5>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" className="btn learn-more-btn">Learn More</a>
-              </div>
-            </div>
-          </div>
-        </div> */}
           </div>
 
+          {/* Review Continer */}
+          <div id='reviews-container'>
+            <h1 className='exclusive-offer-title'>Testimonials</h1>
+              <ReviewSection/>
+          </div>
           {/* Process */}
           <div id='process-container'>
             <h3 id='process-title'>Effortless Wedding Planning</h3>
@@ -342,7 +441,7 @@ export default function Homepage() {
         </>
       ) : (
         <>
-          <DisplayVendors category={ selectedCategory } location={ selectedLocation } goBack={() => setShowServices(false)}/>
+          <DisplayVendors category={selectedCategory} location={selectedCity} goBack={() => setShowServices(false)} setCategory={setSelectedCategory} setLocation={setselectedCity} setState={ setSelectedState } />
         </>
       )}
     </>
