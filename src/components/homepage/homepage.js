@@ -9,6 +9,7 @@ import images from "../../Resources/images";
 
 import DisplayVendors from '../Vendor Display/DisplayVendors';
 import { useNavigate } from 'react-router-dom';
+import ReviewSection from '../Reviews/Reviews';
 
 export default function Homepage() {
   const [categories, setCategories] = useState([]);
@@ -200,43 +201,6 @@ export default function Homepage() {
                       </button>
                     </div>
                   </div>
-
-                  {/* <div class="row" style={{ height: "max-content" }}>
-                    <div class="col-md-5 m-0" style={{ height: "max-content" }}>
-                      <section id='location-select-section'>
-                        <img src={images.locationLogo} id='location-icon' />
-                        <select class="form-select form-select-lg" aria-label="Large select example" id='location-select' onChange={(e) => handleChange("location", e)}>
-                          <option selected>Select a Location</option>
-                          {locations.map((state) => (
-                            <option key={state.state_code} value={state.name}>
-                              {state.name}
-                            </option>
-                          ))}
-                        </select>
-                      </section>
-                    </div>
-                    <div class="col-md-5 m-0" style={{ height: "max-content" }}>
-                      <section id='location-select-section'>
-                        <img src={images.vendorLogo} id='location-icon' />
-                        <select class="form-select form-select-lg" aria-label="Large select example" id='category-select' onChange={(e) => handleChange("category", e)}>
-                          <option selected>Select a Category</option>
-                          {categories.map((category) => (
-                            <option key={category.id} value={category.category_name}>
-                              {category.category_name}
-                            </option>
-                          ))}
-                        </select>
-                      </section>
-                    </div>
-                    <div class="col-md-2 m-0">
-                      <button type="button" id="find-vendor-btn" class="btn btn-lg" onClick={findVendors}>
-                        <section>
-                          <span style={{ paddingTop: "2px" }}>Find Vendor </span>
-                          <img src={images.rightArrow} style={{ height: "27px", paddingBottom: "2px" }} />
-                        </section>
-                      </button>
-                    </div>
-                  </div> */}
                 </div>
 
               </div>
@@ -350,8 +314,10 @@ export default function Homepage() {
             </div>
           </div>
 
+          {/* Review Continer */}
           <div id='reviews-container'>
-            <h3 id='exclusive-offer-title'>Real Weddings</h3>
+            <h1 className='exclusive-offer-title'>Testimonials</h1>
+              <ReviewSection/>
           </div>
           {/* Process */}
           <div id='process-container'>
@@ -415,7 +381,6 @@ export default function Homepage() {
               </div>
             </div>
           </div>
-
 
           {/* footer */}
           <div>

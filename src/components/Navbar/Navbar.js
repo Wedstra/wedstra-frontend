@@ -158,7 +158,7 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                 <Divider /> {/* Separates username from links */}
 
                 {/* Profile & Settings */}
-                <MenuItem component={Link} to="/user-tasks">Tasks</MenuItem>
+                <MenuItem component={Link} to="/tasks">Tasks</MenuItem>
                 <MenuItem component={Link} to="/profile">Profile</MenuItem>
 
                 <Divider /> {/* Separates options from logout */}

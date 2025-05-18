@@ -205,22 +205,22 @@
     flex-direction: column;
     justify-content: end;
     align-items: center;
-    height:max-content; 
+    height: max-content;
 
 
-    h3{
+    h3 {
         font-size: 28px;
         margin: 30px 0 0 0;
         font-weight: 600;
     }
 
-    p{
+    p {
         font-size: 33px;
         margin: 10px 0 0 0;
         font-weight: 400;
         color: #CB0033;
 
-        span{
+        span {
             font-size: 45px;
             font-weight: 500;
             text-decoration: underline;
@@ -228,11 +228,11 @@
     }
 
 
-    .features-list{
+    .features-list {
         /* padding-right: 40px !important; */
-        margin:10px 0 20px 0;        
-        
-        li{
+        margin: 10px 0 20px 0;
+
+        li {
             font-size: 24px;
         }
     }
@@ -240,7 +240,8 @@
 
 .exclusive-card:nth-child(2) {
     justify-content: center;
-  min-height: calc(100% + 450px); /* If compared to siblings */
+    min-height: calc(100% + 450px);
+    /* If compared to siblings */
 }
 
 .special-offer-ribbon {
@@ -255,49 +256,50 @@
 }
 
 .group {
-  height: 115px;
-  position: absolute;
-  top: -10px;
-  left: -15px;
-  width: 140px;
+    height: 115px;
+    position: absolute;
+    top: -10px;
+    left: -15px;
+    width: 140px;
 }
 
 .special-offer {
     border: 3px solid #BB9D7B;
 }
+
 .discount-line {
-  font-size: 18px;
-  margin-top: 10px;
-  margin-bottom: 20px;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .highlight {
-  color: #c70039;
-  font-size: 28px;
-  font-weight: bold;
+    color: #c70039;
+    font-size: 28px;
+    font-weight: bold;
 }
 
 .features-list {
-  list-style: disc;
-  padding-left: 20px;
-  margin-bottom: 20px;
-  font-size: 15px;
+    list-style: disc;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    font-size: 15px;
 }
 
 .learn-btn {
-  background-color: #BB9D7B;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  margin-top: auto;
+    background-color: #BB9D7B;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: auto;
 }
 
 .learn-btn:hover {
-  background-color: #846e55;
+    background-color: #846e55;
 }
 
 #body {
@@ -407,14 +409,15 @@
     transform: scale(1.2);
 }
 
-.reviews-container {
+#reviews-container {
     width: 100%;
     height: max-content;
     padding: 0 100px;
+    margin: 20px 0;
 }
 
 
-.dropdown:hover > dropdown-menu {
+.dropdown:hover>dropdown-menu {
     display: block;
     margin-top: .125em;
 }
@@ -505,5 +508,11 @@
                 }
             }
         }
+    }
+
+    #reviews-container {
+        width: 100%;
+        padding: 0 10px;
+        margin: 20px 0;
     }
 }

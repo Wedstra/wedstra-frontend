@@ -1,97 +1,132 @@
 .profile-container {
-  width: 80%;
   max-width: 1000px;
-  margin: 40px auto;
+  margin: 2rem auto;
+  padding: 2rem;
   background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
   font-family: 'Segoe UI', sans-serif;
-  padding: 30px;
 }
 
+/* Center content */
 .profile-header {
   display: flex;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 20px;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profile-image {
   width: 120px;
   height: 120px;
-  border-radius: 12px;
+  border-radius: 50%;
   object-fit: cover;
-  margin-right: 30px;
+  border: 4px solid #eee;
+  margin-bottom: 1rem;
 }
 
 .profile-info h2 {
-  margin: 0;
-  font-size: 22px;
-  color: #222;
-}
-
-.profile-info .designation {
-  color: #007bff;
-  margin: 4px 0;
-}
-
-.profile-info .rating {
-  color: #444;
-  margin: 4px 0;
-}
-
-.action-buttons {
-  margin-top: 12px;
-}
-
-.message-btn,
-.contact-btn {
-  border: none;
-  padding: 8px 16px;
-  margin-right: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.message-btn {
-  background-color: #f0f0f0;
+  margin-bottom: 0.3rem;
+  font-size: 1.8rem;
   color: #333;
 }
 
-.contact-btn {
-  background-color: #007bff;
-  color: #fff;
+.designation {
+  color: #777;
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
-.profile-content {
+/* Buttons with icons */
+.icon-buttons {
   display: flex;
-  margin-top: 30px;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
 }
 
-.left-column,
-.right-column {
-  flex: 1;
-  padding: 0 20px;
+.edit-btn,
+.wishlist-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.left-column {
-  border-right: 1px solid #eee;
+.wishlist-btn {
+  background-color: #e91e63;
 }
 
-.work-section,
-.skills-section,
-.contact-info,
-.basic-info {
-  margin-bottom: 20px;
+.edit-btn:hover {
+  background-color: #0056b3;
 }
 
-h4 {
-  margin-bottom: 8px;
-  font-size: 16px;
-  color: #666;
+.wishlist-btn:hover {
+  background-color: #c2185b;
 }
 
-p {
-  margin: 4px 0;
-  color: #333;
+/* Info sections */
+.profile-content {
+  margin-top: 2rem;
+}
+
+.info-section > div {
+  background-color: #f8f9fa;
+  margin-bottom: 1.5rem;
+  padding: 1.2rem;
+  border-radius: 10px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-section h4 {
+  margin-bottom: 0.5rem;
+  color: #444;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.3rem;
+}
+
+.info-section p {
+  margin: 0.4rem 0;
+  color: #555;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  background-color: #CB0033;
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+
+@media (max-width: 600px) {
+  .icon-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .edit-btn,
+  .wishlist-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
