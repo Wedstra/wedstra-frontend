@@ -1,15 +1,20 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { use, useEffect, useRef, useState } from 'react'
 import { getCurrentUser, findUserDetailsByUserName } from "../../Auth/UserServices";
 import "./homepage.css";
 import { fetchStates } from '../../API/Resources/fetchStates';
 import { fetchCategories } from '../../API/Resources/fetchCategories';
 import { fetchCities } from '../../API/Resources/fetchCities';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaStar } from "react-icons/fa";
 import images from "../../Resources/images";
 
 import DisplayVendors from '../Vendor Display/DisplayVendors';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ReviewSection from '../Reviews/Reviews';
+import UserPlans from '../UserPlans/UserPlans';
+import Blogs from '../Blogs/Blogs';
+import axiosInstance from '../../API/axiosInstance';
+import { m } from 'framer-motion';
+import DisplayRealWeddings from '../Real_Weddings/display_real_weddings/DisplayRealWeddings';
 
 export default function Homepage() {
   const [categories, setCategories] = useState([]);
@@ -20,6 +25,18 @@ export default function Homepage() {
   const [cities, setCities] = useState([]);
   const [selectedCity, setselectedCity] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(null);
+  const [user, setUser] = useState(null);
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    rating: 0,
+    userId: "",
+    username: ""
+  });
+
   const items = [
     { title: "Mehndi Artists", image: images.mehendi },
     { title: "Makeup", image: images.makeup },
@@ -36,6 +53,31 @@ export default function Homepage() {
   ];
 
   const navigate = useNavigate()
+  const blogsRef = useRef(null);
+
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowPopup(true);
+        }
+      },
+      {
+        threshold: 1.0, // Adjust depending on how visible the element should be
+      }
+    );
+
+    if (blogsRef.current) {
+      observer.observe(blogsRef.current);
+    }
+
+    return () => {
+      if (blogsRef.current) {
+        observer.unobserve(blogsRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -48,9 +90,24 @@ export default function Homepage() {
       setStates(loc);
     }
 
+    const fetchUser = async () => {
+      try {
+        const storedUser = await getCurrentUser(); // ⬅️ Await here
+        if (storedUser) {
+          setUser(storedUser);
+        } else {
+          setUser(null); // explicitly clear user state
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+
 
     fetchCategory();
     fetchstates();
+    fetchUser();
 
     const message = sessionStorage.getItem("message");
     if (message) {
@@ -64,13 +121,13 @@ export default function Homepage() {
       if (selectedState) {
         try {
           const response = await fetchCities(selectedState);
-          setCities(response); 
+          setCities(response);
         } catch (error) {
           console.error("Error fetching cities:", error);
-          setCities([]); 
+          setCities([]);
         }
       } else {
-        setCities([]); 
+        setCities([]);
       }
     };
 
@@ -110,6 +167,64 @@ export default function Homepage() {
     setSelectedCategory(category);
     setShowServices(true);
   }
+
+  const handleClick = (rate) => {
+    setRating(rate);
+    onRatingChange(rate); // Store rating in parent or variable
+  };
+
+  const handleRating = (value) => {
+    setRating(value);
+    onRatingChange(value);
+    setFormData((prev) => ({
+      ...prev,
+      rating: value,
+    }));
+  };
+
+
+  const onRatingChange = () => {
+  }
+
+  const handleReviewChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const createReview = async (e) => {
+    e.preventDefault();
+    formData.userId = user.id;
+    formData.username = user.username;
+    console.log("Submitting review:", formData);
+
+    
+    const response = await axiosInstance.post('/reviews',formData,{
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if(response.data){
+      console.log('Review added..!');
+    }
+    else{
+      console.log('Error adding review ..!');
+    }
+
+    // Reset form
+    setFormData({
+      title: "",
+      content: "",
+      rating: 0,
+    });
+    setHover(null);
+    setShowPopup(false);
+    setRating(0);
+  };
+
+
+
   return (
     <>
       {!showServices ? (
@@ -314,10 +429,96 @@ export default function Homepage() {
             </div>
           </div>
 
+          {/* Exclusive Offers */}
+          <div id='user-plans-container'>
+            <UserPlans homepage={true} />
+          </div>
+
           {/* Review Continer */}
-          <div id='reviews-container'>
-            <h1 className='exclusive-offer-title'>Testimonials</h1>
-              <ReviewSection/>
+          <div ref={blogsRef} id='reviews-container'>
+            <h1 className='exclusive-offer-title text-center'>Reviews</h1>
+            <ReviewSection />
+          </div>
+          {showPopup && (
+            <div className="review-backdrop">
+              <div className="review-modal">
+                <h5 className="mb-3">Write a Review</h5>
+                <form onSubmit={createReview}>
+                  <div className="mb-3">
+                    <label htmlFor="title" className="form-label">Review title</label>
+                    <input
+                      className="form-control"
+                      id="title"
+                      name="title"
+                      placeholder="Review title..."
+                      value={formData.title}
+                      onChange={handleReviewChange}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="content" className="form-label">Your Review</label>
+                    <textarea
+                      className="form-control"
+                      id="content"
+                      name="content"
+                      rows="3"
+                      placeholder="Share your thoughts..."
+                      value={formData.content}
+                      onChange={handleReviewChange}
+                    />
+                  </div>
+
+                  <div className="star-review mb-3">
+                    <h6>Rate your experience:</h6>
+                    <div className="stars d-flex gap-1">
+                      {[...Array(5)].map((_, index) => {
+                        const ratingValue = index + 1;
+                        return (
+                          <label key={ratingValue}>
+                            <input
+                              type="radio"
+                              name="rating"
+                              value={ratingValue}
+                              onClick={() => handleRating(ratingValue)}
+                              hidden
+                            />
+                            <FaStar
+                              className="star"
+                              color={ratingValue <= (hover || formData.rating) ? '#ffc107' : '#e4e5e9'}
+                              size={32}
+                              onMouseEnter={() => setHover(ratingValue)}
+                              onMouseLeave={() => setHover(null)}
+                            />
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {!user && <span className='text-primary'>Login required !</span>}
+                  <div className="d-flex justify-content-end">
+                    {user ? (<button type="submit" className="btn btn-primary btn-sm me-2" onClick={createReview}>Submit</button>) : <button type="submit" className="btn btn-primary btn-sm me-2" disabled>Submit</button>}
+                    <button type="button" className="btn btn-secondary btn-sm" onClick={() => setShowPopup(false)}>Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Real Weddings */}
+          <div id='display-real-weddings-container'>
+            <h1><b>Real Weddings</b></h1>
+            <DisplayRealWeddings />
+          </div>
+
+          {/* Blogs Continer */}
+          <div id='blogs-container'>
+            <div id='blog-container-header' className='container'>
+              <h1><strong>Latest Articles</strong></h1>
+              <Link to='/blogs'><button className='btn btn-outline-primary btn-sm'>view all</button></Link>
+            </div>
+            <Blogs homepage={true} />
           </div>
           {/* Process */}
           <div id='process-container'>
@@ -441,7 +642,7 @@ export default function Homepage() {
         </>
       ) : (
         <>
-          <DisplayVendors category={selectedCategory} location={selectedCity} goBack={() => setShowServices(false)} setCategory={setSelectedCategory} setLocation={setselectedCity} setState={ setSelectedState } />
+          <DisplayVendors category={selectedCategory} location={selectedCity} goBack={() => setShowServices(false)} setCategory={setSelectedCategory} setLocation={setselectedCity} setState={setSelectedState} />
         </>
       )}
     </>

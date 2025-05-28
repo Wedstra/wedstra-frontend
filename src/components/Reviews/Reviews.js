@@ -1,10 +1,9 @@
-// ReviewCarousel.jsx
 import React, { useEffect, useState } from "react";
 import "./reviews.css";
 import { FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 import axiosInstance from "../../API/axiosInstance";
 
-/* ---------------- helpers ---------------- */
+
 const renderStars = (value) => {
   const full = Math.floor(value);        // whole stars
   const half = value % 1 >= 0.25 && value % 1 < 0.75; // show half if 0.25-0.74
@@ -22,7 +21,7 @@ const renderStars = (value) => {
 const chunk = (arr, size) =>
   arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
 
-/* -------------- one card ----------------- */
+
 const ReviewCard = ({ r }) => (
   <div className="review-box">
     <div className="review-header">
@@ -40,7 +39,7 @@ const ReviewCard = ({ r }) => (
   </div>
 );
 
-/* -------------- carousel ----------------- */
+
 const ReviewCarousel = () => {
   const [reviews, setReviews] = useState([]);
   const cardsPerSlide = 3;
@@ -71,7 +70,7 @@ const ReviewCarousel = () => {
   return (
 
     <div>
-      <section id="summary-reviews" className=" container my-3">
+      <section id="summary-reviews" className="container my-3">
         <div className="overall">
           <h6>Overall</h6>
           <div className="score">{avgRating.toFixed(1)}</div>
@@ -128,110 +127,6 @@ const ReviewCarousel = () => {
 };
 
 export default ReviewCarousel;
-
-// import React from 'react';
-// import './reviews.css'
-// import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
-
-// const reviews = [
-//   {
-//     name: 'Grace Clayton',
-//     rating: 5,
-//     comment: 'Excellent service!',
-//     avatar: 'https://via.placeholder.com/40',
-//   },
-//   {
-//     name: 'Adam Chandler',
-//     rating: 4,
-//     comment: 'Very good experience overall.',
-//     avatar: 'https://via.placeholder.com/40',
-//   },
-//   {
-//     name: 'Libby Sidney',
-//     rating: 3,
-//     comment: 'It was okay, not the best.',
-//     avatar: 'https://via.placeholder.com/40',
-//   },
-//   {
-//     name: 'Regene Debra',
-//     rating: 4,
-//     comment: 'Loved it, will return!',
-//     avatar: 'https://via.placeholder.com/40',
-//   },
-//   {
-//     name: 'Paulo Denise',
-//     rating: 5,
-//     comment: 'Exceptional support.',
-//     avatar: 'https://via.placeholder.com/40',
-//   },
-//   {
-//     name: 'Hunter Amery',
-//     rating: 2,
-//     comment: 'Not satisfied with the product.',
-//     avatar: 'https://via.placeholder.com/40',
-//   },
-// ];
-
-// const getAvgRating = () => {
-//   const total = reviews.reduce((sum, r) => sum + r.rating, 0);
-//   return (total / reviews.length).toFixed(1);
-// };
-
-// const renderStars = (rating) => {
-//   const full = Math.floor(rating);
-//   const half = rating - full >= 0.5;
-//   const stars = [];
-
-//   for (let i = 0; i < 5; i++) {
-//     if (i < full) stars.push(<FaStar key={i} color="#ffc107" />);
-//     else if (i === full && half) stars.push(<FaStarHalfAlt key={i} color="#ffc107" />);
-//     else stars.push(<FaRegStar key={i} color="#e4e5e9" />);
-//   }
-
-//   return <span className="stars">{stars}</span>;
-// };
-
-// const getRatingCounts = () => {
-//   const counts = [0, 0, 0, 0, 0];
-//   reviews.forEach((r) => counts[r.rating - 1]++);
-//   return counts.reverse(); // 5 to 1
-// };
-
-// const ReviewSection = () => {
-//   const avgRating = getAvgRating();
-//   const ratingCounts = getRatingCounts();
-//   const maxCount = Math.max(...ratingCounts);
-
-//   return (
-//     <div className="amazon-review-container">
-//       {reviews.map((r, i) => (
-//         <div className="review-box" key={i}>
-//           <div className="review-header">
-//             <div className="avatar-circle">{r.name.charAt(0).toUpperCase()}</div>
-//             <strong>{r.name}</strong>
-//           </div>
-//           <div className="review-rating">
-//             {renderStars(r.rating)}
-//             <strong className="review-title"> {r.title}</strong>
-//           </div>
-//           <div className="review-meta">
-//             Reviewed in India on Wedstra
-//             <br />
-//             Colour:
-//           </div>
-//           <p className="review-body">{r.review}</p>
-//           {r.image && (
-//             <img src={r.image} alt="review-img" className="review-image" />
-//           )}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-//  export default ReviewSection;
-
-
 
 // import React, { useState } from 'react';
 // import { FaStar } from 'react-icons/fa';

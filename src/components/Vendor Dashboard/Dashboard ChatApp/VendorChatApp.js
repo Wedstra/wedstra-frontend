@@ -38,6 +38,15 @@ export default function VendorChatApp() {
         fetchTokenAndVendor();
     }, []);
 
+    function uniqById(arr) {
+        const seen = new Set();
+        return arr.filter(p => {
+            if (seen.has(p.id) || p.id === vendor.id) return false; // skip dupes + yourself
+            seen.add(p.id);
+            return true;
+        });
+    }
+
     const fetchChatMessages = async (receiverName) => {
         try {
             const response = await axiosInstance.get(`/get-messages-for-vendor?receiverName=${receiverName}`, {
@@ -50,10 +59,26 @@ export default function VendorChatApp() {
             if (response.data) {
                 setMessages(response.data);
                 // console.log(response.data);
+
+                const pairs = response.data.map(m => ({
+                    id: m.senderName,   // unique id used for routing
+                    name: m.sName         // readable username that came with the message
+                }));
+
+                console.log(JSON.stringify(pairs));
+
+
+
                 // Extract unique senderNames but exclude the logged-in vendor's ID
                 const uniqueSenders = [...new Set(response.data.map(msg => msg.senderName))]
                     .filter(sender => sender !== vendor.id); // Remove current vendor
-                setUserList(uniqueSenders);
+                // setUserList(uniqueSenders);
+
+
+                const uniqueUsers = uniqById(pairs);
+                console.warn(uniqueUsers);
+
+                setUserList(uniqueUsers);
                 // console.log("distinct Username:" + uniqueSenders);
             }
 
@@ -63,11 +88,11 @@ export default function VendorChatApp() {
     };
 
     useEffect(() => {
-        if (vendor?.id && token) {  
+        if (vendor?.id && token) {
             fetchChatMessages(vendor.id);
             connect();
         }
-    
+
         return () => {
             if (stompClient && stompClient.connected) {
                 stompClient.disconnect(() => {
@@ -84,24 +109,24 @@ export default function VendorChatApp() {
     };
 
     const connect = () => {
-        // let Sock = new SockJS('http://localhost:8443/ws');
-        let Sock = new SockJS('https://wedstra-backend-9886.onrender.com/ws');
+        let Sock = new SockJS('http://localhost:8443/ws');
+        // let Sock = new SockJS('https://wedstra-backend-9886.onrender.com/ws');
         stompClient = over(Sock);
         stompClient.connect({}, () => onConnected(vendor.id), onError);
     };
-    
+
     const onConnected = (vendorId) => {
         setUserData(prev => ({ ...prev, connected: true }));
-        
+
         if (stompClient && stompClient.connected) {
             stompClient.subscribe(`/user/${vendorId}/private`, onPrivateMessage);
             userJoin(vendorId);
         }
     };
-    
+
     const userJoin = (vendorId) => {
         const chatMessage = { senderName: vendorId, status: "JOIN" };
-        
+
         if (stompClient && stompClient.connected) {
             stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
         }
@@ -153,19 +178,20 @@ export default function VendorChatApp() {
                 {/* Left Sidebar - User List */}
                 <div className="w-30 border-end p-3 bg-light">
                     <h4>Users</h4>
-                    <ul className="list-unstyled">
-                        {userList
-                            .filter(sender => sender !== vendor.id)
-                            .map((sender, index) => (
-                                <li
-                                    key={index}
-                                    onClick={() => handleUserClick(sender)}
-                                    className={`p-2 rounded mb-2 ${selectedUser === sender ? 'bg-secondary text-white' : 'bg-transparent'}`}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    {sender}
-                                </li>
-                            ))}
+                    {userList.length === 0 && (
+                        <li className="text-muted fst-italic">
+                            — no conversations yet —
+                        </li>
+                    )}
+                    <ul className="list-unstyled w-40">
+                        {userList.map(u => (
+                            <li key={u.id}
+                                onClick={() => handleUserClick(u.id)}          // pass the id to open the chat
+                                className={`p-2 rounded mb-2 ${selectedUser === u.id ? 'bg-secondary text-white' : ''}`}
+                                style={{ cursor: 'pointer' }}>
+                                {u.name}                                 {/* show name, fall back to id */}
+                            </li>
+                        ))}
                     </ul>
                 </div>
 
@@ -173,7 +199,7 @@ export default function VendorChatApp() {
                 <div className="flex-grow-1 p-3 d-flex flex-column">
                     {selectedUser ? (
                         <>
-                            <h4>Chat with {selectedUser}</h4>
+                            <h4>Chat with <span className='text-muted small'>({selectedUser})</span></h4>
                             <div className="flex-grow-1 overflow-auto border p-3 rounded" style={{ minHeight: '60vh' }}>
                                 {messages
                                     .filter(msg => msg.senderName === selectedUser || msg.receiverName === selectedUser)

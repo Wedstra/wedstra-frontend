@@ -253,10 +253,11 @@ input[type='radio'] {
 
 
 #summary-reviews {
+  border-radius: 12px;
   display: grid;
   grid-template-columns: 180px 1fr;
   background-color: rgb(255, 255, 255);
-  font-family: "Segoe UI", sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 #summary-reviews .overall {

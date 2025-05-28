@@ -71,3 +71,9 @@
         }
     }
   }
+
+  #category-option:hover{
+    background-color: #CB0033;
+    color: white;
+    cursor: pointer;
+  }
