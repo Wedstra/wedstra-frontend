@@ -69,7 +69,7 @@ const userPlans = [
   }
 ];
 
-export default function UserPlans() {
+export default function UserPlans({ homepage }) {
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
 
@@ -78,11 +78,11 @@ export default function UserPlans() {
     const storedRole = localStorage.getItem('role');
 
     if (storedToken) setToken(storedToken);
-    if (storedRole) setRole(storedRole);
+    if (storedRole) setRole(storedRole);   
   }, []);
 
   const renderPlans = (plans) => (
-    <div className="plans-cards">
+    <div className="plans-cards mt-3">
       {plans.map((plan, idx) => (
         <div
           key={idx}
@@ -102,7 +102,7 @@ export default function UserPlans() {
   return (
     <div className="plans-container">
       <h1 className="heading">Find the Perfect Plan</h1>
-      <p className="subheading">We are here to coach you</p>
+      {!homepage && <p className="subheading">We are here to coach you</p>}
       {role === 'VENDOR' ? (
         <>
           <h2 className='mb-3'>Vendor Plans & Add-ons</h2>
@@ -121,7 +121,7 @@ export default function UserPlans() {
         </>
       ) : (
         <>
-          <h2 className='mb-3'>User Subscription Plans</h2>
+          {!homepage && <h2 className='mb-3'>User Subscription Plans</h2>}
           {renderPlans(userPlans)}
         </>
       )}

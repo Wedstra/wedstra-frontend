@@ -3,6 +3,7 @@ import "./personal_info.css";
 import { useDropzone } from "react-dropzone";
 import { fetchStates } from '../../../API/Resources/fetchStates';
 import { fetchCategories } from '../../../API/Resources/fetchCategories';
+import { fetchCities } from '../../../API/Resources/fetchCities';
 
 function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
     const [personalFormData, setPersonalFormData] = useState(formData);

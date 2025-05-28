@@ -1,0 +1,17 @@
+.real-wedding-slide {
+    height: 20rem; /* or 500px / 600px etc. */
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.absolute-inset{
+    height: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content:end;
+    align-items: start;
+}

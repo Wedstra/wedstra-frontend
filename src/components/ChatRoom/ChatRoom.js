@@ -60,7 +60,9 @@ export default function ChatRoom({ vendor, user }) {
         receivername: vendor.id || "",
         connected: false,
         date: null,
-        message: ''
+        message: '',
+        sName: user.username || "",
+        rName: vendor.vendor_name || ""
     });
 
     const toggleChat = () => setIsOpen(!isOpen);
@@ -102,10 +104,8 @@ export default function ChatRoom({ vendor, user }) {
         } catch (error) {
             console.error("Error fetching messages:", error.response?.data || error.message);
         }
-
-
-
     }
+
     useEffect(() => {
         const fetchToken = () => {
             const storedToken = localStorage.getItem("token"); // No need for async/await
@@ -120,13 +120,13 @@ export default function ChatRoom({ vendor, user }) {
 
             }
         };
-
+        console.warn(userData.rName,   userData.sName);
+        
         fetchToken();
     }, []);
 
     useEffect(() => {
         if (token) {
-            console.warn("Token retrieved, now connecting:", token);
             fetchMessages(userData.senderName, userData.receivername);
             connect(); // Ensure connect() is correctly handling re-renders
         }
@@ -141,8 +141,8 @@ export default function ChatRoom({ vendor, user }) {
     }, [token]);
 
     const connect = () => {
-        // let Sock = new SockJS(`http://localhost:8443/ws`);
-        let Sock = new SockJS(`https://wedstra-backend-9886.onrender.com/ws`);
+        let Sock = new SockJS(`http://localhost:8443/ws`);
+        // let Sock = new SockJS(`https://wedstra-backend-9886.onrender.com/ws`);
         stompClient = over(Sock);
         stompClient.connect({}, onConnected, onError);
     }
@@ -179,9 +179,14 @@ export default function ChatRoom({ vendor, user }) {
                 senderName: userData.senderName,
                 receiverName: userData.receivername,
                 message: userData.message,
+                sName:userData.sName,
+                rName:userData.rName,
                 date: new Date(),
                 status: "MESSAGE"
             };
+
+            console.warn(userData.rName,  userData.sName);
+            
 
             setMessages(prevMessages => [...prevMessages, chatMessage]); // Store message in state
             stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));

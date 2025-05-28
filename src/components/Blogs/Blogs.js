@@ -7,7 +7,7 @@ import { Bounce } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 
 
-export default function Blogs() {
+export default function Blogs({ homepage }) {
     const [blogs, setBlogs] = useState([]);
     const [token, setToken] = useState(null);
     const [blog, setBlog] = useState({
@@ -77,7 +77,7 @@ export default function Blogs() {
                 if (response.status !== 200) {
                     throw new Error("Network response was not ok");
                 }
-                setBlogs(response.data);
+                (homepage == true) ? setBlogs((response.data).slice(0,3)) : setBlogs(response.data);
             } catch (error) {
                 console.error("Error fetching blogs:", error);
             }
@@ -85,7 +85,7 @@ export default function Blogs() {
         if (token) {
             fetchBlogs();
         }
-    }, [token])
+    }, [token]);
 
     const postBlog = async () => {
         console.log(blog);
@@ -128,7 +128,7 @@ export default function Blogs() {
                 transition={Bounce}
             />
             <div className="container mt-4">
-                <h1><strong>Latest Articles</strong></h1>
+                { !homepage && <h1><strong>Latest Articles</strong></h1>}
                 {blogs.map((blog) => (
                     <>
                         <div key={blog.id} className="card mb-4 shadow-sm border-0 rounded-4" style={{ background: "#f7fdfd" }}>
@@ -203,9 +203,9 @@ export default function Blogs() {
                     </div>
                 </div>
 
-                <button className="btn btn-success" id='add-blog-btn' data-bs-toggle="modal" data-bs-target="#exampleModal">
+                { !homepage && <button className="btn btn-success" id='add-blog-btn' data-bs-toggle="modal" data-bs-target="#exampleModal">
                     + New Blog
-                </button>
+                </button>}
             </div>
         </>
     )

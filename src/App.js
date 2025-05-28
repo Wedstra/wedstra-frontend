@@ -19,9 +19,11 @@ import AuthorizeVendors from './components/Admin dashboard/Authorize Vendors/Aut
 import UserTask from './components/User Tasks/UserTask';
 import Blogs from './components/Blogs/Blogs';
 import UserPlans from './components/UserPlans/UserPlans';
-import profile from './components/Profile/profile';
 import Profile from './components/Profile/profile';
 import ReviewCarousel from './components/Reviews/Reviews';
+import CreateRealWedding from './components/Real_Weddings/Create_real_wedding/CreateRealWedding';
+import DisplayRealWeddings from './components/Real_Weddings/display_real_weddings/DisplayRealWeddings';
+import RealWeddings from './components/Admin dashboard/Real-weddings/RealWeddings';
 
 function App() {
   const [token, setToken] = useState(() => {
@@ -42,10 +44,10 @@ function App() {
           <Route path='/register-success' element={<RegisterSuccessful />} />
           <Route path='*' element={<Navigate to="/" />} />
           <Route path='/vendor-list' element={<DisplayVendors />} />
-          <Route path='/vendor-plans' element={<UserPlans />} />
+          <Route path='/plans' element={<UserPlans />} />
           <Route path='/reviews' element={<ReviewCarousel />} />
           <Route path='/profile' element={<Profile/>} />
-
+          <Route path='/real-weddings' element={ <DisplayRealWeddings/> }/>
 
           {/* Unauthorized Routes */}
           {!token &&
@@ -98,6 +100,8 @@ function App() {
                     <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
                     <Route path='/service-details' element={<ServiceDetails />} />
                     <Route path='/blogs' element={<Blogs />} />
+                    <Route path='/create-real-wedding' element={<CreateRealWedding />} />
+                    <Route path='/manage-real-weddings' element={ <RealWeddings/> }/>
                   </>
                 )
                   :

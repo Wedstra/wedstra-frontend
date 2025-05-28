@@ -416,10 +416,61 @@
     margin: 20px 0;
 }
 
+#blogs-container {
+    width: 100%;
+    height: max-content;
+    padding: 0 100px;
+    margin: 20px 0;
+}
+
+#blog-container-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+#user-plans-container {
+    width: 100%;
+    height: max-content;
+    padding: 0 100px;
+    margin: 20px 0;
+}
 
 .dropdown:hover>dropdown-menu {
     display: block;
     margin-top: .125em;
+}
+
+
+.review-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Black semi-transparent backdrop */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+}
+
+.review-modal {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+#display-real-weddings-container {
+    width: 100%;
+    height: max-content;
+    padding: 0 100px;
+    margin: 20px 0;
 }
 
 @media screen and (max-width:767px) {
@@ -511,6 +562,23 @@
     }
 
     #reviews-container {
+        width: 100%;
+        padding: 0 10px;
+        margin: 20px 0;
+    }
+
+    #user-plans-container {
+        width: 100%;
+        padding: 0 10px;
+        margin: 20px 0;
+    }
+
+    #blogs-container {
+        width: 100%;
+        padding: 0 10px;
+        margin: 20px 0;
+    }
+    #display-real-weddings-container{
         width: 100%;
         padding: 0 10px;
         margin: 20px 0;

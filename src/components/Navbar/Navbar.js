@@ -99,7 +99,7 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
 
                     <ul className="dropdown-menu">
                       {categories.map((category) => (
-                        <option className="py-1 px-3" key={category.id} value={category.category_name} onClick={openCategory} >
+                        <option className="py-1 px-3" id="category-option" key={category.id} value={category.category_name} onClick={openCategory} >
                           {category.category_name}
                         </option>
                       ))}
@@ -110,7 +110,7 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
             )}
 
             <li className="nav-item">
-              <Link className={isActive("/vendor-plans")} to="/vendor-plans">Services</Link>
+              <Link className={isActive("/plans")} to="/plans">Services</Link>
             </li>
 
             {token && userRole === "VENDOR" && (

@@ -1,6 +1,6 @@
 import React from 'react'
 import "./adminDashboard.css";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -52,14 +52,24 @@ export default function AdminDashboard() {
                 <div className='col-md-6 col-sm-6 mb-4' id='vendors-col'>
                     <div className='dashboard-card card shadow'>
                         <div className='card-body'>
-                            <button className='btn btn-success w-100' onClick={ displayVendors }>Authorize Vendors</button>
+                            <button className='btn btn-primary w-100' onClick={ displayVendors }>Authorize Vendors</button>
                         </div>
                     </div>
                 </div>
                 <div className='col-md-6 col-sm-6 mb-4' id='users-col'>
                     <div className='dashboard-card card shadow'>
                         <div className='card-body'>
-                        <button className='btn btn-primary w-100'>Users</button>
+                        <Link to="/create-real-wedding"><button className='btn btn-primary w-100'>Create Real Weddings</button></Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className='row' id='users-row'> 
+                <div className='col-md-6 col-sm-6 mb-4' id='users-col'>
+                    <div className='dashboard-card card shadow'>
+                        <div className='card-body'>
+                        <Link to="/manage-real-weddings"><button className='btn btn-primary w-100'>View Real Weddings</button></Link>
                         </div>
                     </div>
                 </div>
