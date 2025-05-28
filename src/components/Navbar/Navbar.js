@@ -48,22 +48,6 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
 
   const isActive = (path) => (location.pathname === path ? "nav-link active" : "nav-link");
 
-  const [openStateIndex, setOpenStateIndex] = useState(null);
-  const states = [
-    {
-      name: "California",
-      cities: ["Los Angeles", "San Francisco", "San Diego"]
-    },
-    {
-      name: "Texas",
-      cities: ["Houston", "Dallas", "Austin"]
-    },
-    {
-      name: "New York",
-      cities: ["New York City", "Buffalo", "Rochester"]
-    }
-  ];
-
   useEffect(() => {
     const fetchCategory = async () => {
       const cat = await fetchCategories();
@@ -80,7 +64,7 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
 
 
   const openCategory = () => {
-    
+
   }
   return (
     <nav className="navbar navbar-expand-lg" id="navbar">
@@ -99,11 +83,8 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
               <Link className={isActive("/")} to="/">Home</Link>
             </li>
 
-            {!token && (
+            {(!token || userRole === "USER") && (
               <>
-                <li className="nav-item">
-                  <Link className={isActive("/vendor-list")} to="/vendor-list">Vendors</Link>
-                </li>
                 <li className="nav-item">
                   <div className="dropdown">
                     <Link
@@ -117,81 +98,11 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                     </Link>
 
                     <ul className="dropdown-menu">
-                      {states.map((state, index) => (
-                        <li key={index} className="dropdown-submenu position-relative">
-                          <div
-                            className="dropdown-item dropdown-toggle"
-                            onMouseEnter={() => toggleSubmenu(index)}
-                            style={{ cursor: 'pointer' }}
-                          >
-                            {state.name}
-                          </div>
-                          <ul className={`dropdown-menu ${openStateIndex === index ? 'show' : ''}`}>
-                            {state.cities.map((city, cidx) => (
-                              <li key={cidx}>
-                                <Link
-                                  className="dropdown-item"
-                                  to={`/vendor-list?state=${state.name}&city=${city}`}
-                                >
-                                  {city}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </li>
-              </>
-            )}
-
-            {token && userRole === "USER" && (
-              <>
-                <li className="nav-item">
-                  <Link className={isActive("/vendor-list")} to="/vendor-list">Vendors</Link>
-                </li>
-                <li className="nav-item">
-                  <div className="dropdown">
-                    <Link
-                      className="nav-link dropdown-toggle"
-                      to="#"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      Vendors
-                    </Link>
-
-                    <ul className="dropdown-menu">
-                      {/* {states.map((state, index) => (
-                        <li key={index} className="dropdown-submenu position-relative">
-                          <div
-                            className="dropdown-item dropdown-toggle"
-                            onMouseEnter={() => toggleSubmenu(index)}
-                            style={{ cursor: 'pointer' }}
-                          >
-                            {state.name}
-                          </div>
-                          <ul className={`dropdown-menu ${openStateIndex === index ? 'show' : ''}`}>
-                            {state.cities.map((city, cidx) => (
-                              <li key={cidx}>
-                                <Link
-                                  className="dropdown-item"
-                                  to={`/vendor-list?state=${state.name}&city=${city}`}
-                                >
-                                  {city}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                      ))} */}
                       {categories.map((category) => (
-                            <option className="py-1 px-3" key={category.id} value={category.category_name} onClick={ openCategory } >
-                              {category.category_name}
-                            </option>
-                          ))}
+                        <option className="py-1 px-3" key={category.id} value={category.category_name} onClick={openCategory} >
+                          {category.category_name}
+                        </option>
+                      ))}
                     </ul>
                   </div>
                 </li>
@@ -201,26 +112,6 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
             <li className="nav-item">
               <Link className={isActive("/vendor-plans")} to="/vendor-plans">Services</Link>
             </li>
-            <li className="nav-item">
-              <Link className={isActive("/vendors")} to="/vendors">About us</Link>
-            </li>
-
-            {/* {!token && (
-              <>
-                <li className="nav-item">
-                  <Link className={isActive("/vendor-login")} to="/vendor-login">Vendor Login</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className={isActive("/vendor-register")} to="/vendor-register">Vendor Registration</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className={isActive("/user-login")} to="/user-login">User Login</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className={isActive("/user-register")} to="/user-register">User Registration</Link>
-                </li>
-              </>
-            )} */}
 
             {token && userRole === "VENDOR" && (
               <li className="nav-item">
@@ -233,6 +124,18 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                 <Link className={isActive("/admin-dashboard")} to="/admin-dashboard">Admin Dashboard</Link>
               </li>
             )}
+
+            {token && (userRole === "USER" || userRole === "VENDOR") && (
+              <li className="nav-item">
+                <Link className={isActive("/blogs")} to="/blogs">
+                  Blogs
+                </Link>
+              </li>
+            )}
+
+            <li className="nav-item">
+              <Link className={isActive("/vendors")} to="/vendors">About us</Link>
+            </li>
 
           </ul>
 
@@ -255,7 +158,7 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                 <Divider /> {/* Separates username from links */}
 
                 {/* Profile & Settings */}
-                <MenuItem component={Link} to="/user-tasks">Tasks</MenuItem>
+                <MenuItem component={Link} to="/tasks">Tasks</MenuItem>
                 <MenuItem component={Link} to="/profile">Profile</MenuItem>
 
                 <Divider /> {/* Separates options from logout */}

@@ -20,6 +20,7 @@ const images = {
     process3: require("../images/process3.png"),
     process4: require("../images/process4.png"),
     logo: require("../images/wedstra_logo.png"),
+    ribbon: require("../images/offer-ribbon.png"),
   };
   
   export default images;

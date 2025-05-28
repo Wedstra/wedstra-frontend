@@ -11,18 +11,19 @@ import { ToastContainer } from 'react-toastify';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
-    dob: "",
-    gender: "",
-    address: "",
-    termsAccepted: false,
-  });
+  firstname: "",
+  lastname: "",
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  mobileNo: "",
+  dob: "",
+  gender: "",
+  address: "",
+  termsAccepted: false,
+});
+
 
   const notify = (status) => {
     (status == "success") ? (toast.success('User Registration Successful!', {
@@ -61,8 +62,8 @@ const RegistrationForm = () => {
 
   const validateForm = () => {
     let newErrors = {};
-    if (!formData.firstName) newErrors.firstName = "First Name is required";
-    if (!formData.lastName) newErrors.lastName = "Last Name is required";
+    if (!formData.firstname) newErrors.firstname = "First Name is required";
+    if (!formData.lastname) newErrors.lastname = "Last Name is required";
     if (!formData.username) newErrors.username = "Username is required";
     if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
       newErrors.email = "Invalid email format";
@@ -70,8 +71,8 @@ const RegistrationForm = () => {
       newErrors.password = "Password must be at least 6 characters";
     if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Passwords do not match";
-    if (!formData.phone.match(/^\d{10,15}$/))
-      newErrors.phone = "Phone number must be 10-15 digits";
+    if (!formData.mobileNo.match(/^\d{10,15}$/))
+      newErrors.mobileNo = "mobileNo number must be 10-15 digits";
     if (!formData.termsAccepted)
       newErrors.termsAccepted = "You must accept the terms";
 
@@ -117,13 +118,13 @@ const RegistrationForm = () => {
         <h1 className="text-center">User Registration</h1>
         <form onSubmit={handleSubmit}>
           {[
-            { label: "First Name", name: "firstName" },
-            { label: "Last Name", name: "lastName" },
+            { label: "First Name", name: "firstname" },
+            { label: "Last Name", name: "lastname" },
             { label: "Username", name: "username" },
             { label: "Email", name: "email", type: "email" },
             { label: "Password", name: "password", type: "password" },
             { label: "Confirm Password", name: "confirmPassword", type: "password" },
-            { label: "Phone Number", name: "phone" },
+            { label: "mobileNo", name: "mobileNo" },
             { label: "Date of Birth", name: "dob", type: "date" },
           ].map(({ label, name, type = "text" }) => (
             <div className="mb-3" key={name}>
