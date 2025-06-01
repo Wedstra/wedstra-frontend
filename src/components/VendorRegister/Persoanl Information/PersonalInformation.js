@@ -9,6 +9,9 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
     const [personalFormData, setPersonalFormData] = useState(formData);
     const [locations, setLocations] = useState([]);
 
+    const [states, setStates] = useState([]);
+    const [cities, setCities] = useState([]);
+
     const [errors, setErrors] = useState({});
 
     const validate = (name, value) => {
@@ -32,8 +35,11 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
                 if (!value) error = "Phone number is required";
                 else if (!/^\d{10}$/.test(value)) error = "Phone number must be 10 digits";
                 break;
+            case "state":
+                if (!value) error = "state is required";
+                break;
             case "city":
-                if (!value) error = "City is required";
+                if (!value) error = "city is required";
                 break;
             default:
                 break;
@@ -54,18 +60,27 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
     };
 
     useEffect(() => {
-        const fetchLocations = async () => {
+        const loadStates = async () => {
             const loc = await fetchStates();
-            setLocations(loc);
+            setStates(loc);
         }
-
-        fetchLocations();
+        loadStates();
     }, []);
+
+    useEffect(() => {
+    const loadCities = async () => {
+        if (!formData.state) return; // Prevent API call on initial load
+        const loc = await fetchCities(formData.state);
+        setCities(loc);
+    };
+    loadCities();
+}, [formData.state]);
+
 
     useEffect(() => {
         updateFormData(personalFormData);
 
-        const requiredFields = ["username", "password", "vendor_name", "email", "phone_no", "city"];
+        const requiredFields = ["username", "password", "vendor_name", "email", "phone_no", "state","city"];
 
         // Check if all required fields are filled
         const allFieldsFilled = requiredFields.every((field) => personalFormData[field]?.trim() !== "");
@@ -153,20 +168,38 @@ function PersonalInformation({ formData, updateFormData, setPersonalNext }) {
 
                 <div className="mb-3">
                     <select
+                        className={`form-control form-control-lg ${errors["state"] ? "is-invalid" : ""}`}
+                        name="state"
+                        value={formData.state || ""}
+                        onChange={handleChange}
+                    >
+                        <option value="" disabled>Select a state</option>
+                        {states.map((state) => (
+                            <option key={state} value={state}>
+                                {state}
+                            </option>
+                        ))}
+                        {/* Add other cities here */}
+                    </select>
+                    {errors["state"] && <div className="invalid-feedback">{errors["state"]}</div>}
+                </div>
+
+                <div className="mb-3">
+                    <select
                         className={`form-control form-control-lg ${errors["city"] ? "is-invalid" : ""}`}
                         name="city"
                         value={formData.city || ""}
                         onChange={handleChange}
                     >
                         <option value="" disabled>Select a city</option>
-                        {locations.map((state) => (
-                            <option key={state.state_code} value={state.name}>
-                                {state.name}
+                        {cities.map((city) => (
+                            <option key={city} value={city}>
+                                {city}
                             </option>
                         ))}
                         {/* Add other cities here */}
                     </select>
-                    {errors["city"] && <div className="invalid-feedback">{errors["city"]}</div>}
+                    {errors["state"] && <div className="invalid-feedback">{errors["state"]}</div>}
                 </div>
 
             </div>
@@ -475,14 +508,14 @@ const FileUpload = ({ label, subLabel, file, onDrop, onRemove, isLastFileUpload 
 
     return (
         <div className="file-upload">
-           <label className='file-label' style={{ fontWeight: "bold" }}>
-        {label}
-        {subLabel && (
-          <small style={{ display: "block", color: "gray", fontSize: "0.8rem", marginTop: "2px" }}>
-            {subLabel}
-          </small>
-        )}
-      </label>
+            <label className='file-label' style={{ fontWeight: "bold" }}>
+                {label}
+                {subLabel && (
+                    <small style={{ display: "block", color: "gray", fontSize: "0.8rem", marginTop: "2px" }}>
+                        {subLabel}
+                    </small>
+                )}
+            </label>
             <div {...getRootProps()} className="dropzone">
                 <input {...getInputProps()} />
                 <span className="title">Choose a file or drag & drop it here</span>
