@@ -18,13 +18,17 @@ export default function RegistrationSuccess() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
             >
-                <img src={successIllustration} alt="Vendor Registration Success" className="illustration" />
-                <h1 id="success-title">Vendor Registration Successful!</h1>
-                <p id="subTitle">Congratulations! Your vendor account has been successfully created. You can now start managing your business with us.</p>
+                <img src={successIllustration} alt="Registration Success" className="illustration" />
+                <h1 id="success-title">Registration Successful!</h1>
+                <p id="subTitle">
+                    Your profile has been successfully submitted and is currently under verification.
+                    Within <b>2–4 working days</b>, you will receive an email notification regarding your account authorization.
+                </p>
                 <button className="proceed-button" onClick={handleClick}>
                     Continue to Login
                 </button>
             </motion.div>
         </div>
+
     );
 }
