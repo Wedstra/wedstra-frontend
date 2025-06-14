@@ -24,6 +24,9 @@ import ReviewCarousel from './components/Reviews/Reviews';
 import CreateRealWedding from './components/Real_Weddings/Create_real_wedding/CreateRealWedding';
 import DisplayRealWeddings from './components/Real_Weddings/display_real_weddings/DisplayRealWeddings';
 import RealWeddings from './components/Admin dashboard/Real-weddings/RealWeddings';
+import ForgotPassword from './components/Forgot password/ForgotPassword';
+import ResetPassword from './components/Forgot password/ResetPassword';
+import Aboutus from './components/AboutUs/AboutUs'; 
 
 function App() {
   const [token, setToken] = useState(() => {
@@ -46,8 +49,10 @@ function App() {
           <Route path='/vendor-list' element={<DisplayVendors />} />
           <Route path='/plans' element={<UserPlans />} />
           <Route path='/reviews' element={<ReviewCarousel />} />
-          <Route path='/profile' element={<Profile/>} />
-          <Route path='/real-weddings' element={ <DisplayRealWeddings/> }/>
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/real-weddings' element={<DisplayRealWeddings />} />
+          <Route path='/about-us' element={<Aboutus />} />
+
 
           {/* Unauthorized Routes */}
           {!token &&
@@ -56,6 +61,9 @@ function App() {
               <Route path='/user-register' element={<RegistrationForm />} />
               <Route path='/vendor-register' element={<VendorRegister />} />
               <Route path='/user-login' element={<UserLogin />} />
+              <Route path='/vendor/:vendor_id' element={<Navigate to="/user-login" />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
             </>
 
           }
@@ -95,19 +103,17 @@ function App() {
               )
                 : userRole === "ADMIN" ? (
                   <>
-                    <Route path='/admin-dashboard' element={<AdminDashboard/>} />
+                    <Route path='/admin-dashboard' element={<AdminDashboard />} />
                     <Route path='/authorize-vendors' element={<AuthorizeVendors />} />
                     <Route path='/vendor/:vendor_id' element={<VendorDetails />} />
                     <Route path='/service-details' element={<ServiceDetails />} />
                     <Route path='/blogs' element={<Blogs />} />
                     <Route path='/create-real-wedding' element={<CreateRealWedding />} />
-                    <Route path='/manage-real-weddings' element={ <RealWeddings/> }/>
+                    <Route path='/manage-real-weddings' element={<RealWeddings />} />
                   </>
                 )
                   :
-                  (<Route path='/vendor-login' element={<Navigate to="/" />}/>)}
-
-            {userRole === "ADMIN" && <></>}
+                  (<Route path='/vendor-login' element={<Navigate to="/" />} />)}
           </Route>
         </Routes>
       </BrowserRouter>

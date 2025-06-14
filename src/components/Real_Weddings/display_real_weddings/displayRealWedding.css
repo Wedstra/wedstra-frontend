@@ -1,17 +1,60 @@
-.real-wedding-slide {
-    height: 20rem; /* or 500px / 600px etc. */
-    border-radius: 1rem;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    background-size: cover;
-    background-position: center;
-    position: relative;
+.modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
 }
 
-.absolute-inset{
-    height: 20rem;
+.modal-content-custom {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.slick-track {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+}
+
+
+.real-wedding-slide{
+    height: 300px !important;
+}
+
+#slide-backdeop{
+    height: 300px !important;
     display: flex;
     flex-direction: column;
-    justify-content:end;
-    align-items: start;
+    justify-content: end;
+}
+
+@media screen and (max-width: 768px) {
+    .modal-content-custom {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .slick-track {
+        flex-direction: column !important;
+    }
+
+    .real-wedding-slide {
+        height: 300px !important;
+    }
+
+    #slide-backdeop {
+        height: 300px !important;
+    }
+    
 }

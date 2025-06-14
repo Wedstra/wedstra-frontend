@@ -1,38 +1,71 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../API/axiosInstance';
 import './displayVendor.css';
-
+import { useLocation } from 'react-router-dom';
 import empty_result from "../../images/empty-rresult.png";
 import { Link, useNavigate } from 'react-router-dom';
-export default function DisplayVendors({ category, location, goBack, setCategory, setLocation,setState }) {
+export default function DisplayVendors({ category, location, goBack, setCategory, setLocation, setState }) {
   const [vendors, setVendors] = useState([]);
+  const [navCategory, setNavCategory] = useState(null);
 
   const navigate = useNavigate();
+  const useLocationObject = useLocation();
+
+  
   useEffect(() => {
-    const getVendors = async () => {
+    setNavCategory(useLocationObject.state?.category || null);
+    // Fetch new vendors based on updated category
+  }, [useLocationObject.state?.category]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let resolvedCategory = navCategory;
+      
+      
+      // If navCategory isn't set yet, try pulling from location state
+      if (!navCategory && useLocationObject.state?.category) {
+        resolvedCategory = useLocationObject.state.category;
+        setNavCategory(resolvedCategory); // update state
+        console.log(resolvedCategory);
+      }
+
       let response = null;
 
-      if (location === null && category !== null) {
-        // Only location is null
-        response = await axiosInstance.get(`/vendor/verified/by-category/${category}`);
-      } else if (location === null && category === null) {
-        // Both are null
-        response = await axiosInstance.get(`/vendor/get/verified`);
-      } else if (location !== null && category !== null) {
-        // Both are defined
-        response = await axiosInstance.get(`/vendor/by-location/${location}/by-category/${category}`);
-      }
-      setVendors(response.data);
-    }
+      try {
+        if (!resolvedCategory) {
+          if (location === null && category !== null) {
+            // Only location is null
+            response = await axiosInstance.get(`/vendor/verified/by-category/${category}`);
+          } else if (location === null && category === null) {
+            // Both location and category are null
+            response = await axiosInstance.get(`/vendor/get/verified`);
+          } else if (location !== null && category !== null) {
+            // Both are defined
+            response = await axiosInstance.get(`/vendor/by-location/${location}/by-category/${category}`);
+          }
+        } else {
+          response = await axiosInstance.get(`/vendor/verified/by-category/${resolvedCategory}`);
+        }
 
-    getVendors();
-  }, []);
+        if (response) {
+          setVendors(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching vendors:", error);
+      }
+    };
+
+    fetchData();
+  }, [navCategory, location, category]);
 
   const handleGoBack = () => {
-    setCategory(null);
-    setLocation(null);
-    setState(null);
-    goBack(false);
+    if (!navCategory) {
+      setCategory(null);
+      setLocation(null);
+      setState(null);
+      setNavCategory(null);
+      goBack(false);
+    }
   }
   return (
     <>
@@ -46,7 +79,7 @@ export default function DisplayVendors({ category, location, goBack, setCategory
               <div className="card shadow-sm border-0 rounded-4 mb-4 p-3 d-flex flex-row align-items-start justify-content-between" style={{ backgroundColor: '#ffffff' }}>
                 <div className="d-flex">
                   <img
-                    src="https://wedstra25.s3.eu-north-1.amazonaws.com/aadharCard.png"
+                    src={ vendor.business_photos[0] }
                     className="rounded-3 me-3"
                     alt="Vendor"
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}

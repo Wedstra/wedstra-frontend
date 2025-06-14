@@ -141,8 +141,8 @@ export default function ChatRoom({ vendor, user }) {
     }, [token]);
 
     const connect = () => {
-        let Sock = new SockJS(`http://localhost:8443/ws`);
-        // let Sock = new SockJS(`https://wedstra-backend-9886.onrender.com/ws`);
+        // let Sock = new SockJS(`http://localhost:8443/ws`);
+        let Sock = new SockJS(`https://wedstra-backend-9886.onrender.com/ws`);
         stompClient = over(Sock);
         stompClient.connect({}, onConnected, onError);
     }

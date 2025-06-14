@@ -15,6 +15,7 @@ import Blogs from '../Blogs/Blogs';
 import axiosInstance from '../../API/axiosInstance';
 import { m } from 'framer-motion';
 import DisplayRealWeddings from '../Real_Weddings/display_real_weddings/DisplayRealWeddings';
+import useAuthCheck from '../../Auth/useAuthCheck';
 
 export default function Homepage() {
   const [categories, setCategories] = useState([]);
@@ -39,7 +40,7 @@ export default function Homepage() {
 
   const items = [
     { title: "Mehndi Artists", image: images.mehendi },
-    { title: "Makeup", image: images.makeup },
+    { title: "Makeup & Beauty", image: images.makeup },
     { title: "Photographers", image: images.photographers },
     { title: "Jewellery & Accessories", image: images.jewellery },
     { title: "Groom Wear", image: images.groomWear },
@@ -156,9 +157,6 @@ export default function Homepage() {
   }
 
   const findVendors = () => {
-    console.log("Selected city: " + selectedCity);
-    console.log("Selected state: " + selectedState);
-    console.log("Selected category: " + selectedCategory);
     setShowServices(true);
   }
 
@@ -200,15 +198,15 @@ export default function Homepage() {
     formData.username = user.username;
     console.log("Submitting review:", formData);
 
-    
-    const response = await axiosInstance.post('/reviews',formData,{
+
+    const response = await axiosInstance.post('/reviews', formData, {
       headers: { "Content-Type": "application/json" }
     });
 
-    if(response.data){
+    if (response.data) {
       console.log('Review added..!');
     }
-    else{
+    else {
       console.log('Error adding review ..!');
     }
 
@@ -429,7 +427,7 @@ export default function Homepage() {
             </div>
           </div>
 
-          {/* Exclusive Offers */}
+          {/* User plans */}
           <div id='user-plans-container'>
             <UserPlans homepage={true} />
           </div>
@@ -642,7 +640,18 @@ export default function Homepage() {
         </>
       ) : (
         <>
-          <DisplayVendors category={selectedCategory} location={selectedCity} goBack={() => setShowServices(false)} setCategory={setSelectedCategory} setLocation={setselectedCity} setState={setSelectedState} />
+          {/* <DisplayVendors 
+          category={selectedCategory} 
+          location={selectedCity} 
+          goBack={() => setShowServices(false)} setCategory={setSelectedCategory} setLocation={setselectedCity} setState={setSelectedState} /> */}
+          <DisplayVendors
+            category={selectedCategory}
+            location={selectedCity}
+            goBack={() => setShowServices(false)}
+            setCategory={setSelectedCategory}
+            setLocation={setselectedCity}  // Corrected: setselectedCity
+            setState={setSelectedState}
+          />
         </>
       )}
     </>

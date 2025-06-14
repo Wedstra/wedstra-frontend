@@ -63,8 +63,8 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
   };
 
 
-  const openCategory = () => {
-
+  const openCategory = (category) => {
+    navigate("/vendor-list",{ state: { category } });
   }
   return (
     <nav className="navbar navbar-expand-lg" id="navbar">
@@ -97,11 +97,14 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                       Vendors
                     </Link>
 
-                    <ul className="dropdown-menu">
+                    <ul className="dropdown-menu custom-dropdown-width">
                       {categories.map((category) => (
-                        <option className="py-1 px-3" id="category-option" key={category.id} value={category.category_name} onClick={openCategory} >
+                        <li className="py-1 px-3" id="category-option" 
+                        key={category.id} 
+                        value={category.category_name} 
+                        onClick={() => openCategory(category.category_name)} >
                           {category.category_name}
-                        </option>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -134,7 +137,7 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
             )}
 
             <li className="nav-item">
-              <Link className={isActive("/vendors")} to="/vendors">About us</Link>
+              <Link className={isActive("/about-us")} to="/about-us">About us</Link>
             </li>
 
           </ul>
@@ -158,8 +161,8 @@ const Navbar = ({ token, userRole, setToken, setUserRole }) => {
                 <Divider /> {/* Separates username from links */}
 
                 {/* Profile & Settings */}
-                <MenuItem component={Link} to="/tasks">Tasks</MenuItem>
-                <MenuItem component={Link} to="/profile">Profile</MenuItem>
+                { userRole === "USER" && <MenuItem component={Link} to="/tasks">Tasks</MenuItem>}
+                {<MenuItem component={Link} to="/profile">Profile</MenuItem>}
 
                 <Divider /> {/* Separates options from logout */}
 

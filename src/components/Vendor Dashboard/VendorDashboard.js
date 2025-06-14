@@ -56,8 +56,8 @@ export default function VendorDashboard() {
         return <DashboardEvents />;
       case "analysis":
         return <div>Analyatics</div>;
-      case "profile":
-        return <div>profile</div>;
+      case "Reviews":
+        return <div>Reviews</div>;
       case "messages":
         return <VendorChatApp/>;
       case "createService":
