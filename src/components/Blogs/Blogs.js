@@ -69,22 +69,23 @@ export default function Blogs({ homepage }) {
             try {
                 const response = await axiosInstance.get("/blogs", {
                     method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
                 });
+
+                console.log(response.data);
+                
                 if (response.status !== 200) {
                     throw new Error("Network response was not ok");
                 }
+                
                 (homepage == true) ? setBlogs((response.data).slice(0,3)) : setBlogs(response.data);
+                console.log(blogs);
+                
             } catch (error) {
                 console.error("Error fetching blogs:", error);
             }
         };
-        if (token) {
+       
             fetchBlogs();
-        }
     }, [token]);
 
     const postBlog = async () => {

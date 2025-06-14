@@ -130,7 +130,7 @@ export default function Profile() {
                                 <h4>Business Photos</h4>
                                 <div className="photo-grid">
                                     {user.business_photos?.map((url, idx) => (
-                                        <img key={idx} src={url} alt={`Business ${idx + 1}`} />
+                                        <img style={{ width:"100%", height:"auto" }} key={idx} src={url} alt={`Business ${idx + 1}`} />
                                     ))}
                                 </div>
                             </div>

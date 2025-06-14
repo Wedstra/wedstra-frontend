@@ -31,52 +31,52 @@
 #vendor-details-section {
 
     .vendor-details {
-        #spotlight-title{
+        #spotlight-title {
             color: #313131;
             font-size: 28px;
             font-weight: 600;
             margin: 10px 0 0 0;
         }
 
-        .row{
+        .row {
             height: max-content;
 
-            #carousel-col{
+            #carousel-col {
                 height: max-content;
 
-                .react-carousel{
+                .react-carousel {
                     height: 500px;
 
-                    #caro-img{
+                    #caro-img {
                         height: 500px;
                     }
                 }
             }
 
-            #vendor-info-col{
+            #vendor-info-col {
                 height: max-content;
 
-                #vendor-info{
+                #vendor-info {
                     color: #444444;
                     font-size: 18px;
                     font-weight: 400;
                     padding: 2px 0 2px 0;
 
-                    strong{
+                    strong {
                         color: #000;
                     }
                 }
 
-                #info-title{
+                #info-title {
                     color: #000000;
                     font-weight: 600;
                 }
             }
         }
 
-        #vendor-services{
-            
-            #service-title{
+        #vendor-services {
+
+            #service-title {
                 color: #313131;
                 font-size: 28px;
                 font-weight: 600;
@@ -86,7 +86,7 @@
     }
 }
 
-#card-deck{
+#card-deck {
     margin-top: -20px;
 }
 
@@ -95,101 +95,102 @@
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: max-content;
-  }
-  
-  .service-card:hover {
+}
+
+.service-card:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-  
+}
 
-  .service-image {
+
+.service-image {
     position: relative;
     height: 200px;
     background: #f8f9fa;
-  }
-  
-  .service-image img {
+}
+
+.service-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  
-  .category-badge {
+}
+
+.category-badge {
     position: absolute;
     top: 10px;
     right: 10px;
     font-size: 18px;
     padding: 5px 10px;
-  }
-  
+}
 
-  .card-body {
+
+.card-body {
     padding: 20px;
-  }
-  
-  .card-title {
+}
+
+.card-title {
     font-weight: bold;
     font-size: 1.2rem;
-  }
-  
-  #description {
+}
+
+#description {
     font-size: 0.9rem;
     color: #6c757d;
     height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  
-  .price {
+}
+
+.price {
     font-weight: bold;
     color: #007bff;
     font-size: 1rem;
     margin-top: 10px;
-  }
-  
-  .rating {
+}
+
+.rating {
     display: flex;
     align-items: center;
     font-size: 0.9rem;
     margin-top: 10px;
-  }
-  
-  .location {
+}
+
+.location {
     font-size: 0.9rem;
     color: #6c757d;
     margin-top: 5px;
-  }
-  
-  .date {
+}
+
+.date {
     font-size: 0.8rem;
     margin-top: 5px;
-  }
-  
-  .btn {
+}
+
+.btn {
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
     padding: 8px 12px;
-  }  
-  .row #service-col .card .badge{
+}
+
+.row #service-col .card .badge {
     position: absolute;
     right: 10px;
     top: 10px;
     font-size: 15px;
-  }
+}
 
-  #service-description{
+#service-description {
     height: auto;
-  }
+}
 
-  .service-card {
+.service-card {
     position: relative;
     transition: all 0.3s ease-in-out;
     border-radius: 12px;
-    box-shadow: 0px 0px 30px 1px rgb(0, 0, 0,0.1) !important; 
+    box-shadow: 0px 0px 30px 1px rgb(0, 0, 0, 0.1) !important;
     margin-bottom: 24px;
     padding: 10px;
 }
@@ -200,15 +201,15 @@
 }
 
 .service-image img {
-    height: 220px; 
+    height: 220px;
     object-fit: cover;
-    border-radius: 8px; 
+    border-radius: 8px;
 }
 
 .price {
     font-size: 1.3rem;
     font-weight: bold;
-    color: #28a745; 
+    color: #28a745;
 }
 
 .location {
@@ -218,7 +219,7 @@
 
 
 .row {
-    --bs-gutter-x: 1.5rem; 
+    --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 2rem;
 }
 
@@ -230,21 +231,56 @@
     padding: 8px 12px;
 }
 
-.filer-services-div #filter-row #category-filter{
+.filer-services-div #filter-row #category-filter {
     height: max-content;
 }
 
-.filer-services-div #filter-row #location-filter{
+.filer-services-div #filter-row #location-filter {
     height: max-content;
 }
 
-#filter-row{
+#filter-row {
     height: max-content;
 }
 
-.service-badge{
+.service-badge {
     position: absolute;
     z-index: 2;
+}
+
+.thumbnail-container {
+    width: 70px !important;
+    height: 70px !important;
+    overflow-y: hidden;
+}
+
+.thumbnail-img:hover {
+    opacity: 0.8;
+    transition: 0.2s ease;
+}
+
+.thumbnail-img.border-primary {
+    border-color: #CB0033 !important;
+}
+
+.image-gallery .main-image {
+    background-color: #f8f9fa;
+    /* Optional: light gray background */
+}
+
+.review-form{
+    background-color: #cb003300;
+    padding:20px 400px;
+
+    form{
+        background-color: rgb(182, 210, 255);
+        padding: 20px;
+        border-radius: 20px;
+    }
+}
+
+.stars:hover{
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -260,4 +296,17 @@
     .price {
         font-size: 1.1rem;
     }
+
+    .thumbnail-container {
+        width: 100% !important;
+        overflow-x: hidden;
+    }
 }
+
+@media (max-width: 1100) {
+    .thumbnail-container {
+        width: 100% !important;
+        overflow-x: hidden;
+    }
+}
+

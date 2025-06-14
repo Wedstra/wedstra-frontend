@@ -144,7 +144,7 @@ export default function UserLogin() {
                   {loading ? <section id="spinner section"><span className="spinner-border spinner-border-sm spinner"></span></section> : "Login"}
                 </button>
               </form>
-              <p className="forgot-password"><Link>Forgot password?</Link></p>
+              <p className="forgot-password"><Link to="/forgot-password">Forgot password?</Link></p>
               <p className="register-text">Don't have an account? <span><Link to={"/vendor-register"} >Register here.</Link></span></p>
             </section>
           </div>
